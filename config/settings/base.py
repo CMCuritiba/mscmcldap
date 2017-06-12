@@ -32,7 +32,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     #'django.contrib.sites',
     #'django.contrib.messages',
-    #'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
 
     # Useful template tags:
     # 'django.contrib.humanize',
@@ -41,6 +41,7 @@ DJANGO_APPS = [
     #'django.contrib.admin',
 ]
 THIRD_PARTY_APPS = [
+    'rest_framework',
 ]
 
 # Apps specific for this project go here.
@@ -164,7 +165,7 @@ TEMPLATES = [
 #STATIC_ROOT = str(ROOT_DIR('staticfiles'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-#STATIC_URL = '/staticfiles/'
+STATIC_URL = '/staticfiles/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 #STATICFILES_DIRS = [
