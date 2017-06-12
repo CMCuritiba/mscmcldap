@@ -92,7 +92,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': 'postgres:///mscmc-test',
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
+#DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 
 
