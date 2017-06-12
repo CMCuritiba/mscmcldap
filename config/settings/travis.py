@@ -33,13 +33,15 @@ DJANGO_APPS = [
     # 'django.contrib.humanize',
 
     # Admin
-    'django.contrib.admin',
+    #'django.contrib.admin',
 ]
 THIRD_PARTY_APPS = [
+    'rest_framework',
 ]
 
 # Apps specific for this project go here.
 LOCAL_APPS = [
+    'mscmcldap.api.apps.ApiConfig',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
