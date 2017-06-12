@@ -13,14 +13,11 @@ install:
 
 before_script:
   - psql -c 'create database mscmc;' -U postgres
-  - psql -c 'CREATE TABLE v_setor (set_id serial primary key,set_nome character varying(500) not null,set_sigla character varying(100) not null,set_id_superior integer,set_ativo boolean not null,set_tipo character varying(1));' -U postgres
-  - psql -c 'CREATE TABLE v_pessoa(pes_matricula serial primary key,pes_nome character varying(500) not null,set_id integer not null);' -U postgres
-  - python manage.py makemigrations api --settings=config.settings.travis
-  - python manage.py migrate api --settings=config.settings.travis
-
+  - psql -c 'CREATE TABLE api_v_setor (set_id serial primary key,set_nome character varying(500) not null,set_sigla character varying(100) not null,set_id_superior integer,set_ativo boolean not null,set_tipo character varying(1));' -U postgres
+  - psql -c 'CREATE TABLE api_v_pessoa(pes_matricula serial primary key,pes_nome character varying(500) not null,set_id integer not null);' -U postgres
 # comando para rodas os testes
 script: 
-  - coverage run manage.py test --settings=config.settings.travis
+  - coverage run manage.py test
 
 after_success:
   codecov
