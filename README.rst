@@ -1,7 +1,7 @@
-Aplicação Chamados CMC
-======================
+Aplicação Micro Services LDAP CMC
+=================================
 
-Aplicação Django para controle de chamados Câmara Municipal de Curitiba
+Aplicação django que fornece micro serviços para os sistemas da Câmara Municipal de Curitiba
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/

@@ -1,0 +1,45 @@
+[
+	{
+        "model": "api.vsetor", 
+        "fields": {
+            "set_id": 1, 
+            "set_nome": "Diretoria Geral",
+            "set_sigla": "DG",
+            "set_ativo": 1,
+            "set_tipo": "N"
+        }
+    },
+    {
+        "model": "api.vsetor", 
+        "fields": {
+            "set_id": 4, 
+            "set_nome": "Departamento de Administração e Finanças",
+            "set_sigla": "DAF",
+            "set_id_superior": 1,
+            "set_ativo": 1,
+            "set_tipo": "N"
+        }
+    },
+    {
+        "model": "api.vsetor", 
+        "fields": {
+            "set_id": 27, 
+            "set_nome": "Diretoria de Informática",
+            "set_sigla": "DIF",
+            "set_id_superior": 4,
+            "set_ativo": 1,
+            "set_tipo": "N"
+        }
+    },
+    {
+        "model": "api.vsetor", 
+        "fields": {
+            "set_id": 171, 
+            "set_nome": "Divisão de Desenvolvimento De Sistemas",
+            "set_sigla": "DDS-1",
+            "set_id_superior": 27,
+            "set_ativo": 1,
+            "set_tipo": "N"
+        }
+    }
+]
