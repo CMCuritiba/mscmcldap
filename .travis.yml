@@ -5,6 +5,7 @@ python:
 
 before_install:
   - export DJANGO_SETTINGS_MODULE=config.settings.travis
+  - export DATABASE_URL=postgres:///mscmc-test
 
 # comando para instalar dependencias
 install: 

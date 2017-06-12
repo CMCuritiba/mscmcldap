@@ -90,7 +90,7 @@ MANAGERS = ADMINS
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': 'postgres:///mscmc-test',
+    'default': env.db(),
 }
 #DATABASES['default']['ATOMIC_REQUESTS'] = True
 
