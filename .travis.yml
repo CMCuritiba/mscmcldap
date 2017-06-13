@@ -5,7 +5,7 @@ python:
 
 before_install:
   - export DJANGO_SETTINGS_MODULE=config.settings.travis
-  - export DATABASE_URL=postgres:///mscmc-test
+  - export DATABASE_URL=postgres:///mscmctest
 
 # comando para instalar dependencias
 install: 
@@ -13,7 +13,7 @@ install:
   - pip install codecov
 
 before_script:
-  - psql -c 'create database mscmc-test;' -U postgres
+  - psql -c 'create database mscmctest;' -U postgres
   - psql -c 'CREATE TABLE v_setor (set_id serial primary key,set_nome character varying(500) not null,set_sigla character varying(100) not null,set_id_superior integer,set_ativo boolean not null,set_tipo character varying(1));' -U postgres
   - psql -c 'CREATE TABLE v_pessoa(pes_matricula serial primary key,pes_nome character varying(500) not null,set_id integer not null);' -U postgres
 # comando para rodas os testes
