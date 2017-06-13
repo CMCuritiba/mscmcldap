@@ -7,8 +7,7 @@ from django.db import IntegrityError, DataError
 import os
 
 class VSetorTestCase(TestCase):
-	fixtures = ['vsetor.json']
-
+	
 	def setUp(self):
 		super(VSetorTestCase, self).setUp()
 
@@ -18,7 +17,6 @@ class VSetorTestCase(TestCase):
 
 
 class VPessoaTestCase(TestCase):
-	fixtures = ['vsetor.json', 'vpessoa.json']		
 
 	def test_view_v_pessoa_ok(self):
 		vpessoa = VPessoa.objects.get(pk=2179)

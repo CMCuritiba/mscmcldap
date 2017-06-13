@@ -4,7 +4,6 @@ from rest_framework.test import APITestCase, APIRequestFactory, APIClient
 from mscmcldap.api.models import VSetor, VPessoa
 
 class SetorAPITestCase(APITestCase):
-	fixtures = ['vsetor.json']
 
 	def setUp(self):
 		super(SetorAPITestCase, self).setUp()
@@ -19,7 +18,6 @@ class SetorAPITestCase(APITestCase):
 		self.assertEqual(response.data[0]['set_nome'], 'Diretoria Geral')		
 
 class PessoaAPITestCase(APITestCase):
-	fixtures = ['vpessoa.json']
 
 	def setUp(self):
 		super(PessoaAPITestCase, self).setUp()
