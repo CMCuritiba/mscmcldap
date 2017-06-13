@@ -8,7 +8,7 @@ from django.utils.encoding import python_2_unicode_compatible
 # Model para a view V_SETOR
 #---------------------------------------------------------------------------------------------
 @python_2_unicode_compatible
-class VSetor(models.Model):
+class v_setor(models.Model):
 	class Meta:
 		verbose_name_plural = 'Setores'
 		managed = False
@@ -31,7 +31,7 @@ class VSetor(models.Model):
 # Model para a view V_PESSOA
 #---------------------------------------------------------------------------------------------
 @python_2_unicode_compatible
-class VPessoa(models.Model):
+class v_pessoa(models.Model):
 	class Meta:
 		verbose_name_plural = 'Pessoas'		
 		managed = False

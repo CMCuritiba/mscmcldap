@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework.test import APITestCase, APIRequestFactory, APIClient
-from mscmcldap.api.models import VSetor, VPessoa
+from mscmcldap.api.models import v_setor, v_pessoa
 
 class SetorAPITestCase(APITestCase):
+	fixtures = ['inicial.json']
 
 	def setUp(self):
 		super(SetorAPITestCase, self).setUp()
@@ -18,6 +19,7 @@ class SetorAPITestCase(APITestCase):
 		self.assertEqual(response.data[0]['set_nome'], 'Diretoria Geral')		
 
 class PessoaAPITestCase(APITestCase):
+	fixtures = ['inicial.json']
 
 	def setUp(self):
 		super(PessoaAPITestCase, self).setUp()

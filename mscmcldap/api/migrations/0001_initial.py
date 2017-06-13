@@ -42,41 +42,6 @@ class Migration(migrations.Migration):
                 set_id integer not null
             );
             """
-        ),
-        migrations.RunSQL(
-            """
-            INSERT INTO v_setor(set_id, set_nome, set_sigla, set_tipo, set_ativo) VALUES(1, 'Diretoria Geral', 'DG', 'N', '1');
-            """
-        ),
-        migrations.RunSQL(
-            """
-            INSERT INTO v_setor(set_id, set_nome, set_sigla, set_id_superior, set_tipo, set_ativo) VALUES(4, 'Departamento de Administração e Finanças', 'DAF', 1, 'N', '1');
-            """
-        ),
-        migrations.RunSQL(
-            """
-            INSERT INTO v_setor(set_id, set_nome, set_sigla, set_id_superior, set_tipo, set_ativo) VALUES(27, 'Diretoria de Informática', 'DIF', 4, 'N', '1');
-            """
-        ),
-        migrations.RunSQL(
-            """
-            INSERT INTO v_setor(set_id, set_nome, set_sigla, set_id_superior, set_tipo, set_ativo) VALUES(171, 'Divisão de Desenvolvimento De Sistemas', 'DDS-1', 27, 'N', '1');
-            """
-        ),
-        migrations.RunSQL(
-            """
-            INSERT INTO v_pessoa(pes_matricula, pes_nome, set_id) VALUES(2179, 'Alexandre Odoni', 171);
-            """
-        ),
-        migrations.RunSQL(
-            """
-            INSERT INTO v_pessoa(pes_matricula, pes_nome, set_id) VALUES(9842, 'Nilton Cordoni Junior', 1);
-            """
-        ),
-        migrations.RunSQL(
-            """
-            INSERT INTO v_pessoa(pes_matricula, pes_nome, set_id) VALUES(2135, 'Aline Bogo - Diretor De Departamento Fg-8', 4);
-            """
         )
     ]
 

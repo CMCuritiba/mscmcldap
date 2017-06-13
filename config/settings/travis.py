@@ -12,6 +12,27 @@ from __future__ import absolute_import, unicode_literals
 
 import environ, os
 
+from django.test.runner import DiscoverRunner
+ 
+ 
+class UnManagedModelTestRunner(DiscoverRunner):
+ 
+    def setup_test_environment(self, *args, **kwargs):
+        from django.apps import apps
+        self.unmanaged_models = [m for m in apps.get_models() if not m._meta.managed]
+        for m in self.unmanaged_models:
+            print(m)
+            m._meta.managed = True
+        super(UnManagedModelTestRunner, self).setup_test_environment(*args, **kwargs)
+ 
+    def teardown_test_environment(self, *args, **kwargs):
+        super(UnManagedModelTestRunner, self).teardown_test_environment(*args, **kwargs)
+        # reset unmanaged models
+        for m in self.unmanaged_models:
+            m._meta.managed = False
+
+
+
 env = environ.Env(DEBUG=(bool, False),)
 
 ROOT_DIR = environ.Path(__file__) - 3  # (chamados-cmc/config/settings/base.py - 3 = chamados-cmc/)
@@ -264,3 +285,5 @@ LOGGING = {
         },
     },
 }
+
+TEST_RUNNER = 'config.settings.travis.UnManagedModelTestRunner'
