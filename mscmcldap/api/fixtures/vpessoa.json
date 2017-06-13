@@ -1,6 +1,6 @@
 [
     {
-        "model": "api.vpessoa", 
+        "model": "api.v_pessoa", 
         "fields": {
         	"pes_matricula": 2179,
             "pes_nome": "Alexandre Odoni",
@@ -8,7 +8,7 @@
         }
     },    
     {
-        "model": "api.vpessoa", 
+        "model": "api.v_pessoa", 
         "fields": {
         	"pes_matricula": 9842,
             "pes_nome": "Nilton Cordoni Junior",
@@ -16,7 +16,7 @@
         }
     },
     {
-        "model": "api.vpessoa", 
+        "model": "api.v_pessoa", 
         "fields": {
         	"pes_matricula": 2135,
             "pes_nome": "Aline Bogo - Diretor De Departamento Fg-8",
