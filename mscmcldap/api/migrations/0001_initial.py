@@ -9,6 +9,8 @@ class Migration(migrations.Migration):
 
     initial = True
 
+    print('Iniciando comandos SQL para mockar views')
+
     operations = [
         migrations.RunSQL(
             """
@@ -77,3 +79,5 @@ class Migration(migrations.Migration):
             """
         )
     ]
+
+    print('Finalizando comandos SQL para mockar views')
