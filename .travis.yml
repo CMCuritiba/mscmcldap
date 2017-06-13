@@ -20,7 +20,4 @@ before_script:
 
 # comando para rodas os testes
 script: 
-  - coverage run manage.py test
-
-after_success:
-  codecov
+  - python manage.py test
