@@ -1,6 +1,6 @@
 [
 	{
-        "model": "api.v_setor", 
+        "model": "v_setor", 
         "fields": {
             "set_id": 1, 
             "set_nome": "Diretoria Geral",
@@ -10,7 +10,7 @@
         }
     },
     {
-        "model": "api.v_setor", 
+        "model": "v_setor", 
         "fields": {
             "set_id": 4, 
             "set_nome": "Departamento de Administração e Finanças",
@@ -21,7 +21,7 @@
         }
     },
     {
-        "model": "api.v_setor", 
+        "model": "v_setor", 
         "fields": {
             "set_id": 27, 
             "set_nome": "Diretoria de Informática",
@@ -32,7 +32,7 @@
         }
     },
     {
-        "model": "api.v_setor", 
+        "model": "v_setor", 
         "fields": {
             "set_id": 171, 
             "set_nome": "Divisão de Desenvolvimento De Sistemas",
