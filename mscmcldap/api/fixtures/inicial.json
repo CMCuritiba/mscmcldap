@@ -1,6 +1,6 @@
 [
 	{
-        "model": "api.vsetor", 
+        "model": "api.v_setor", 
         "fields": {
             "set_id": 1, 
             "set_nome": "Diretoria Geral",
@@ -10,7 +10,7 @@
         }
     },
     {
-        "model": "api.vsetor", 
+        "model": "api.v_setor", 
         "fields": {
             "set_id": 4, 
             "set_nome": "Departamento de Administração e Finanças",
@@ -21,7 +21,7 @@
         }
     },
     {
-        "model": "api.vsetor", 
+        "model": "api.v_setor", 
         "fields": {
             "set_id": 27, 
             "set_nome": "Diretoria de Informática",
@@ -32,7 +32,7 @@
         }
     },
     {
-        "model": "api.vsetor", 
+        "model": "api.v_setor", 
         "fields": {
             "set_id": 171, 
             "set_nome": "Divisão de Desenvolvimento De Sistemas",
@@ -41,5 +41,31 @@
             "set_ativo": 1,
             "set_tipo": "N"
         }
+    },
+
+	{
+        "model": "api.v_pessoa", 
+        "fields": {
+        	"pes_matricula": 2179,
+            "pes_nome": "Alexandre Odoni",
+            "set_id": 171
+        }
+    },    
+    {
+        "model": "api.v_pessoa", 
+        "fields": {
+        	"pes_matricula": 9842,
+            "pes_nome": "Nilton Cordoni Junior",
+            "set_id": 1
+        }
+    },
+    {
+        "model": "api.v_pessoa", 
+        "fields": {
+        	"pes_matricula": 2135,
+            "pes_nome": "Aline Bogo - Diretor De Departamento Fg-8",
+            "set_id": 4
+        }
     }
+
 ]

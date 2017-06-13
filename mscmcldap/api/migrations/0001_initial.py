@@ -9,12 +9,21 @@ class Migration(migrations.Migration):
 
     initial = True
 
+    print('Iniciando comandos SQL para mockar views')
+
     operations = [
         migrations.RunSQL(
             """
             DROP TABLE IF EXISTS v_setor;
+            """
+        ),
+        migrations.RunSQL(
+            """
             DROP TABLE IF EXISTS v_pessoa;
- 
+            """
+        ),
+        migrations.RunSQL(
+            """
             CREATE TABLE v_setor (
                 set_id serial primary key,
                 set_nome character varying(500) not null,
@@ -23,13 +32,17 @@ class Migration(migrations.Migration):
                 set_ativo boolean not null, 
                 set_tipo character varying(1)
             );
-
+            """
+        ),
+        migrations.RunSQL(
+            """
             CREATE TABLE v_pessoa(
                 pes_matricula serial primary key,
                 pes_nome character varying(500) not null,
                 set_id integer not null
             );
-
             """
-        ),
+        )
     ]
+
+    print('Finalizando comandos SQL para mockar views')

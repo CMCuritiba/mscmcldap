@@ -12,6 +12,29 @@ from __future__ import absolute_import, unicode_literals
 
 import environ, os
 
+from django.test.runner import DiscoverRunner
+ 
+ 
+class UnManagedModelTestRunner(DiscoverRunner):
+ 
+    def setup_test_environment(self, *args, **kwargs):
+        from django.apps import apps
+        self.unmanaged_models = [m for m in apps.get_models() if not m._meta.managed]
+        for m in self.unmanaged_models:
+            print(m)
+            m._meta.managed = True
+        super(UnManagedModelTestRunner, self).setup_test_environment(*args, **kwargs)
+ 
+    def teardown_test_environment(self, *args, **kwargs):
+        super(UnManagedModelTestRunner, self).teardown_test_environment(*args, **kwargs)
+        # reset unmanaged models
+        for m in self.unmanaged_models:
+            m._meta.managed = False
+
+
+
+env = environ.Env(DEBUG=(bool, False),)
+
 ROOT_DIR = environ.Path(__file__) - 3  # (chamados-cmc/config/settings/base.py - 3 = chamados-cmc/)
 APPS_DIR = ROOT_DIR.path('mscmcldap')
 
@@ -33,13 +56,15 @@ DJANGO_APPS = [
     # 'django.contrib.humanize',
 
     # Admin
-    'django.contrib.admin',
+    #'django.contrib.admin',
 ]
 THIRD_PARTY_APPS = [
+    'rest_framework',
 ]
 
 # Apps specific for this project go here.
 LOCAL_APPS = [
+    'mscmcldap.api.apps.ApiConfig',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -88,15 +113,16 @@ MANAGERS = ADMINS
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE':   'django.db.backends.postgresql_psycopg2',
-        'NAME':     'mscmc',
-        'USER':     'postgres',
-        'HOST':     'localhost',
-        'PORT':     '5432',
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql_psycopg2',
+            'NAME':     'mscmctest',
+            'USER':     'postgres',
+            'PASSWORD': '',
+            'HOST':     'localhost',
+            'PORT':     '',
+        }
     }
-}
-DATABASES['default']['ATOMIC_REQUESTS'] = True
+#DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 
 
@@ -259,3 +285,5 @@ LOGGING = {
         },
     },
 }
+
+TEST_RUNNER = 'config.settings.travis.UnManagedModelTestRunner'
