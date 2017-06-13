@@ -20,4 +20,4 @@ before_script:
 
 # comando para rodas os testes
 script: 
-  - python manage.py test
+  - python manage.py test --keepdb
