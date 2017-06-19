@@ -26,7 +26,7 @@ def setores(request):
 	return Response(serializer.data)
 
 @api_view(['GET'])
-def pessoas(request, set_id):
+def pessoas_setor(request, set_id):
 	pessoas = v_pessoa.objects.all().filter(set_id=set_id)
 	serializer = PessoaSerializer(pessoas, many=True)
 	return Response(serializer.data)
@@ -35,4 +35,10 @@ def pessoas(request, set_id):
 def pessoa(request, pes_matricula):
 	pessoa = v_pessoa.objects.get(pes_matricula=pes_matricula)
 	serializer = PessoaSerializer(pessoa)
+	return Response(serializer.data)
+
+@api_view(['GET'])
+def pessoas(request):
+	pessoas = v_pessoa.objects.all()
+	serializer = PessoaSerializer(pessoas, many=True)
 	return Response(serializer.data)

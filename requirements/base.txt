@@ -9,6 +9,7 @@ django==1.10.5
 
 # Configuration
 django-environ==0.4.1
+dj-database-url>=0.4.2
 
 # Compressor
 django-compressor==2.1.1
@@ -48,3 +49,6 @@ pytz==2016.10
 
 # Django Rest
 djangorestframework==3.6.3
+
+#Unipath
+Unipath>=1.1
