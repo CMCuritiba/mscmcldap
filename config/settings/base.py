@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 
 import environ, os
 
-ROOT_DIR = environ.Path(__file__) - 3  # (chamados-cmc/config/settings/base.py - 3 = chamados-cmc/)
+ROOT_DIR = environ.Path(__file__) - 3  
 APPS_DIR = ROOT_DIR.path('mscmcldap')
 
 # Load operating system environment variables and then prepare to use them
