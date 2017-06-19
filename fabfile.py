@@ -5,12 +5,14 @@ from contextlib import contextmanager
 import os  
 
 
-PROJECT_NAME = 'wramais'
+PROJECT_NAME = 'mscmcldap'
 WEBAPPS = '/usr/share/webapps'
 HTML = '/var/www/html'
 ENVS = '/usr/share/envs'
 PROJECT_ROOT = WEBAPPS + '/%s' % PROJECT_NAME
-REPO = 'git@gitlab.cmc.pr.gov.br:desenv/wramais.git'
+REPO = 'https://github.com/CMCuritiba/mscmcldap.git'
+USERAPP = 'cmc-apps'
+ENV_NAME = 'mscmc'
 
 env.hosts = []
 
@@ -23,11 +25,13 @@ def localhost():
 
 @task
 def staging():
-	env.hosts = ['192.168.57.103']
+	#env.hosts = ['staging.cmc.pr.gov.br']
+	env.hosts = ['192.168.56.102']
 	env.environment = 'staging'	
-	env.user = 'staging'
-	env.virtualenv = '/usr/share/envs/wramais'
-	env.activate = 'source /usr/share/envs/wramais/bin/activate'
+	#env.user = 'suporte'
+	env.user = 'koala'
+	env.virtualenv = '/usr/share/envs/{}'.format(ENV_NAME)
+	env.activate = 'source /usr/share/envs/{}/bin/activate'.format(ENV_NAME)
 	env.wwwdata = 'www-data'
 	env.python_location = '/usr/bin/python3.4'
 
@@ -43,28 +47,36 @@ def production():
 # NÃO MUDE NADA ABAIXO !!!!!!!
 # ---------------------------------------------------------------------------------------------------------------
 
+def cria_grupo():
+	sudo('addgroup --system {}'.format(USERAPP))
+
+def cria_userapp():
+	sudo('adduser --system --ingroup {} --home /usr/share/webapps --disabled-login {}'.format(USERAPP, USERAPP))
+
 def clean():
 	''' Limpa Python bytecode '''
 	sudo('find . -name \'*.py?\' -exec rm -rf {} \;')
 
 def chown():
 	''' Seta permissões ao usuário/grupo corretos '''
-	sudo('chown -R {}:{} {}'.format(env.user, env.wwwdata, PROJECT_ROOT))
+	sudo('chown -R {}:{} {}'.format(USERAPP, USERAPP, PROJECT_ROOT))
+	sudo('chown -R {}:{} {}'.format(USERAPP, USERAPP, ENVS))
+	sudo('chown -R {}:{} {}'.format(USERAPP, env.wwwdata, HTML + '/' + PROJECT_NAME))	
 
 def cria_webapps():
 	sudo('mkdir -p {}'.format(WEBAPPS))
-	sudo('chown -R {}:{} {}'.format(env.user, env.wwwdata, WEBAPPS))
+	sudo('mkdir -p {}'.format(PROJECT_ROOT))
+	#sudo('chown -R {}:{} {}'.format(USERAPP, USERAPP, WEBAPPS))
 
 def cria_envs():
 	sudo('mkdir -p {}'.format(ENVS))
-	sudo('chown -R {}:{} {}'.format(env.user, env.wwwdata, ENVS))
+	#sudo('chown -R {}:{} {}'.format(USERAPP, USERAPP, ENVS))
 
 def cria_html():
+	sudo('mkdir -p {}'.format(HTML))
 	sudo('mkdir -p {}'.format(HTML + '/' + PROJECT_NAME))
 	sudo('mkdir -p {}'.format(HTML + '/' + PROJECT_NAME + '/logs'))
-	sudo('chown -R {}:{} {}'.format(env.user, env.wwwdata, WEBAPPS))	
-	sudo('chown -R {}:{} {}'.format(env.user, env.wwwdata, HTML + '/' + PROJECT_NAME))	
-
+	#sudo('chown -R {}:{} {}'.format(USERAPP, env.wwwdata, HTML + '/' + PROJECT_NAME))	
 
 def restart():
 	sudo('supervisorctl reread')
@@ -110,52 +122,52 @@ def install_production():
 
 @task
 def bootstrap():
+	'''
 	# Atualiza código para o servidor de aplicação
 
 	# git, nginx, supervisor e memcached
-	sudo('apt-get update')
-	sudo('apt-get install git')
-	sudo('apt-get install supervisor')
-	sudo('apt-get install nginx')
-	sudo('apt-get install memcached')
+	sudo('aptitude update')
+	sudo('aptitude install git')
+	sudo('aptitude install supervisor')
+	sudo('aptitude install nginx')
+	sudo('aptitude install memcached')
 	# bibliotecas diversas usadas pelo projeto (ldap, xmlm, ssl, etc) 
-	sudo('apt-get install libpq-dev')
-	sudo('apt-get install python-dev')
+	sudo('aptitude install libpq-dev')
+	sudo('aptitude install python-dev')
 	#sudo('apt-get install python3.5-dev')
-	sudo('apt-get install python3.4-dev')
-	sudo('apt-get install python-pip')
-	sudo('apt-get install python-virtualenv')
-	sudo('apt-get install libfreetype6-dev')
-	sudo('apt-get install libncurses5-dev')
-	sudo('apt-get install libxml2-dev')
-	sudo('apt-get install libxslt1-dev')
-	sudo('apt-get install zlib1g-dev')
-	sudo('apt-get install libffi-dev')
-	sudo('apt-get install libsasl2-dev')
-	sudo('apt-get install libldap2-dev')
-	sudo('apt-get install libssl-dev')
+	sudo('aptitude install python3.4-dev')
+	sudo('aptitude install python-pip')
+	sudo('aptitude install python-virtualenv')
+	sudo('aptitude install libfreetype6-dev')
+	sudo('aptitude install libncurses5-dev')
+	sudo('aptitude install libxml2-dev')
+	sudo('aptitude install libxslt1-dev')
+	sudo('aptitude install zlib1g-dev')
+	sudo('aptitude install libffi-dev')
+	sudo('aptitude install libsasl2-dev')
+	sudo('aptitude install libldap2-dev')
+	sudo('aptitude install libssl-dev')
 	# Para python 3.4 necessário bibliotecas abaixo:
-	sudo('apt-get install libpcap0.8-dev')
-	sudo('apt-get install python3-setuptools')
-	sudo('apt-get install libjpeg62-turbo-dev')
+	sudo('aptitude install libpcap0.8-dev')
+	sudo('aptitude install python3-setuptools')
+	sudo('aptitude install libjpeg62-turbo-dev')
 
-	sudo('apt-get install curl')
+	sudo('aptitude install curl')
 	# baixar o node e instalar
 	sudo('curl -sL https://deb.nodesource.com/setup_6.x | bash -')
-	sudo('apt-get install -y nodejs')
+	sudo('aptitude install -y nodejs')
 	sudo('npm install -g bower')
 
 	# Cria os diretórios e permissões necessários 
+
+	cria_grupo()
+	cria_userapp()
 	cria_webapps()	
 	cria_envs()
 	cria_html()
-	run('mkdir -p {}'.format(PROJECT_ROOT))
-	run('git clone {} {}'.format(REPO, PROJECT_ROOT))
-	
+	sudo('git clone {} {}'.format(REPO, PROJECT_ROOT))
+	'''
 	with cd(PROJECT_ROOT):
-		# Atualiza servidor com última versão do master
-		run('git pull origin master')
-
 		# Cria o ambiente virtual do projeto 
 		sudo('virtualenv --python={} {}'.format(env.python_location, env.virtualenv))
 
@@ -181,7 +193,7 @@ def manage_collectstatic():
 	with cd(PROJECT_ROOT):
 		with source_virtualenv():
 			# Gera todos os arquivos css/js
-			run('./manage.py collectstatic --noinput --settings=config.settings.production')
+			run('./manage.py collectstatic --noinput --settings=config.settings.local')
 
 @task
 def git_update():
@@ -191,8 +203,8 @@ def git_update():
 
 @task 
 def cria_links():
-	sudo('ln -sf {}/deploy/staging/supervisor.conf /etc/supervisor/conf.d/wramais.conf'.format(PROJECT_ROOT))
-	sudo('ln -sf {}/deploy/staging/nginx.conf /etc/nginx/sites-enabled/wramais'.format(PROJECT_ROOT))
+	sudo('ln -sf {}/deploy/staging/supervisor.conf /etc/supervisor/conf.d/mscmc.conf'.format(PROJECT_ROOT))
+	sudo('ln -sf {}/deploy/staging/nginx.conf /etc/nginx/sites-enabled/mscmc'.format(PROJECT_ROOT))
 	sudo('chmod a+x {}/deploy/staging/run.sh'.format(PROJECT_ROOT))
 
 @task
