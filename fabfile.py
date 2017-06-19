@@ -202,5 +202,5 @@ def cria_links():
 @task
 def restart_nginx_supervisor():
 	sudo('supervisorctl reload')
-	sudo('supervisorctl restart {}'.format(PROJECT_NAME))
+	sudo('supervisorctl restart {}'.format(ENV_NAME))
 	sudo('service nginx restart')
