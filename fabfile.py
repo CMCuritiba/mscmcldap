@@ -26,10 +26,10 @@ def localhost():
 @task
 def staging():
 	#env.hosts = ['staging.cmc.pr.gov.br']
-	env.hosts = ['192.168.56.102']
+	env.hosts = ['10.0.0.61']
 	env.environment = 'staging'	
 	#env.user = 'suporte'
-	env.user = 'koala'
+	env.user = 'suporte'
 	env.virtualenv = '/usr/share/envs/{}'.format(ENV_NAME)
 	env.activate = 'source /usr/share/envs/{}/bin/activate'.format(ENV_NAME)
 	env.wwwdata = 'www-data'
