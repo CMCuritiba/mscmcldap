@@ -122,7 +122,6 @@ def install_production():
 
 @task
 def bootstrap():
-	'''
 	# Atualiza código para o servidor de aplicação
 
 	# git, nginx, supervisor e memcached
@@ -154,9 +153,9 @@ def bootstrap():
 
 	sudo('aptitude install curl')
 	# baixar o node e instalar
-	sudo('curl -sL https://deb.nodesource.com/setup_6.x | bash -')
-	sudo('aptitude install -y nodejs')
-	sudo('npm install -g bower')
+	# sudo('curl -sL https://deb.nodesource.com/setup_6.x | bash -')
+	# sudo('aptitude install -y nodejs')
+	# sudo('npm install -g bower')
 
 	# Cria os diretórios e permissões necessários 
 
@@ -166,14 +165,14 @@ def bootstrap():
 	cria_envs()
 	cria_html()
 	sudo('git clone {} {}'.format(REPO, PROJECT_ROOT))
-	'''
+
 	with cd(PROJECT_ROOT):
 		# Cria o ambiente virtual do projeto 
 		sudo('virtualenv --python={} {}'.format(env.python_location, env.virtualenv))
 
 		with source_virtualenv():
 			# Ativa o ambiente virtual 
-			run(env.activate)
+			sudo(env.activate, user='cmc-apps')
 
 			# Instala todos os pacotes no servidor 
 			sudo('pip install -r requirements/production.txt')
@@ -182,24 +181,17 @@ def bootstrap():
 	chown()
 
 @task
-def manage_bower():
-	with cd(PROJECT_ROOT):
-		with source_virtualenv():
-			# Roda o bower install
-			run('./manage.py bower_install --settings=config.settings.production')
-
-@task
 def manage_collectstatic():
 	with cd(PROJECT_ROOT):
 		with source_virtualenv():
 			# Gera todos os arquivos css/js
-			run('./manage.py collectstatic --noinput --settings=config.settings.local')
+			sudo('python manage.py collectstatic --settings=config.settings.production', user='cmc-apps')
 
 @task
 def git_update():
 	with cd(PROJECT_ROOT):
 		# Atualiza servidor com última versão do master
-		run('git pull origin master')
+		sudo('git pull origin master', user='cmc-apps')
 
 @task 
 def cria_links():
