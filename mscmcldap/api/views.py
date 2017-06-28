@@ -21,13 +21,13 @@ class PessoaSerializer(serializers.ModelSerializer):
 
 @api_view(['GET'])
 def setores(request):
-	setores = v_setor.objects.all().filter(set_ativo=True)
+	setores = v_setor.objects.filter(set_ativo=True)
 	serializer = SetorSerializer(setores, many=True)
 	return Response(serializer.data)
 
 @api_view(['GET'])
 def pessoas_setor(request, set_id):
-	pessoas = v_pessoa.objects.all().filter(set_id=set_id)
+	pessoas = v_pessoa.objects.filter(set_id=set_id)
 	serializer = PessoaSerializer(pessoas, many=True)
 	return Response(serializer.data)
 
@@ -42,3 +42,10 @@ def pessoas(request):
 	pessoas = v_pessoa.objects.all()
 	serializer = PessoaSerializer(pessoas, many=True)
 	return Response(serializer.data)
+
+@api_view(['GET'])
+def setor(request, pes_matricula):
+	pessoa = v_pessoa.objects.filter(pes_matricula=pes_matricula).first()
+	setor = v_setor.objects.filter(set_id=pessoa.set_id)
+	serializer = SetorSerializer(setor, many=True)
+	return Response(serializer.data)	
