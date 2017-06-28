@@ -46,6 +46,6 @@ def pessoas(request):
 @api_view(['GET'])
 def setor(request, pes_matricula):
 	pessoa = v_pessoa.objects.filter(pes_matricula=pes_matricula).first()
-	setor = v_setor.objects.filter(set_id=pessoa.set_id)
-	serializer = SetorSerializer(setor)
+	setor = v_setor.objects.filter(set_id=pessoa.set_id).first()
+	serializer = SetorSerializer(setor, many=False)
 	return Response(serializer.data)	
