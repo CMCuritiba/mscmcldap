@@ -1,3 +1,3 @@
-bind = '127.0.0.1:8899'  
+bind = 'unix:/var/run/webapps/mscmcldap/gunicorn.sock'
 workers = 2  
 timeout = 30  
