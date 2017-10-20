@@ -83,3 +83,9 @@ def item(request, item_id):
 	item = v_item.objects.filter(item=item_id).first()
 	serializer = ItemSerializer(item, many=False)
 	return Response(serializer.data)			
+
+@api_view(['GET'])
+def setor_setor(request, set_id):
+	setor = v_setor.objects.filter(set_id=set_id).first()
+	serializer = SetorSerializer(setor, many=False)
+	return Response(serializer.data)		

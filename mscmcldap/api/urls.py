@@ -15,4 +15,5 @@ urlpatterns = [
 	url(r'^centro_custo/(?P<centro_custo>[0-9]+)/$', views.centro_custo, name='api-centro-custo'),
 	url(r'^itens/$', views.itens, name='api-itens'),
 	url(r'^item/(?P<item_id>[0-9]+)/$', views.item, name='api-item'),
+	url(r'^setor_setor/(?P<set_id>[0-9]+)/$', views.setor_setor, name='api-setor-setor'),
 ]
