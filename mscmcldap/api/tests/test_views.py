@@ -48,3 +48,41 @@ class PessoaAPITestCase(APITestCase):
 	def test_retorna_pessoas(self):
 		response = self.client.get('/api/pessoas/')
 		self.assertEqual(response.data[0]['pes_nome'], 'Alexandre Odoni')
+
+class CentroCustoAPITestCase(APITestCase):
+	fixtures = ['inicial.json']
+
+	def setUp(self):
+		super(CentroCustoAPITestCase, self).setUp()
+		self.factory = APIRequestFactory()		
+
+	def test_retorna_centro_custo_link_ok(self):
+		response = self.client.get('/api/centros_custo/')
+		self.assertEqual(response.status_code, 200)				
+
+	def test_retorna_centro_custo(self):
+		response = self.client.get('/api/centros_custo/')
+		self.assertEqual(response.data[0]['descricao'], 'Departamento de Administração e Finanças')
+
+	def test_retorna_centro_custo_id(self):
+		response = self.client.get('/api/centro_custo/4/')
+		self.assertEqual(response.data['descricao'], 'Departamento de Administração e Finanças')
+
+class ItemAPITestCase(APITestCase):
+	fixtures = ['inicial.json']
+
+	def setUp(self):
+		super(ItemAPITestCase, self).setUp()
+		self.factory = APIRequestFactory()		
+
+	def test_retorna_item_link_ok(self):
+		response = self.client.get('/api/itens/')
+		self.assertEqual(response.status_code, 200)				
+
+	def test_retorna_item(self):
+		response = self.client.get('/api/itens/')
+		self.assertEqual(response.data[0]['desc_item'], 'Lâmpada Suave 23w')		
+
+	def test_retorna_item_id(self):
+		response = self.client.get('/api/item/838/')
+		self.assertEqual(response.data['desc_item'], 'Lâmpada Suave 23w')

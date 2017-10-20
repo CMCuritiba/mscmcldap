@@ -42,6 +42,33 @@ class Migration(migrations.Migration):
                 set_id integer not null
             );
             """
+        ),
+        migrations.RunSQL(
+            """
+            CREATE TABLE v_centro_custo(
+                centrocusto serial primary key,
+                local character varying(500),
+                descricao character varying(500) not null,
+                ativoinativoai character varying(1) not null,
+                codigoresponsavel integer
+            );
+            """
+        ),
+        migrations.RunSQL(
+            """
+            CREATE TABLE v_item(
+                item serial primary key,
+                unidade character varying(10) not null,
+                classificacao character varying(10) not null,
+                desc_classificacao character varying(500) not null,
+                desc_item character varying(500) not null,
+                estocavel character varying(1) not null,
+                ativoinativoai character varying(1) not null,
+                valor character varying(100),
+                ativo_classificacao character varying(1) not null,
+                itememanalisesn character varying(1) not null
+            );
+            """
         )
     ]
 

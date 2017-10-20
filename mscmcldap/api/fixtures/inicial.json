@@ -66,6 +66,31 @@
             "pes_nome": "Aline Bogo - Diretor De Departamento Fg-8",
             "set_id": 4
         }
+    },
+    {
+        "model": "api.v_centro_custo", 
+        "fields": {
+            "centrocusto": 4,
+            "local": "",
+            "descricao": "Departamento de Administração e Finanças",
+            "ativoinativoai": "A",
+            "codigoresponsavel": 0
+        }
+    },
+    {
+        "model": "api.v_item", 
+        "fields": {
+            "item": 838,
+            "unidade": "UND",
+            "classificacao": "026001",
+            "desc_classificacao": "MATERIAL ELÉTRICO E ELETRÔNICO",
+            "desc_item": "Lâmpada Suave 23w",
+            "estocavel": "N",
+            "ativoinativoai": "A",
+            "valor": "0",
+            "ativo_classificacao": "S",
+            "itememanalisesn": "N"
+        }
     }
 
 ]
