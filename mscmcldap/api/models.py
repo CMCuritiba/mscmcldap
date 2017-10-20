@@ -46,4 +46,52 @@ class v_pessoa(models.Model):
 
 	def __str__(self):
 		return self.pes_nome
+#---------------------------------------------------------------------------------------------
+# Model para a view V_CENTRO_CUSTO
+#---------------------------------------------------------------------------------------------
+@python_2_unicode_compatible
+class v_centro_custo(models.Model):
+	class Meta:
+		verbose_name_plural = 'Centros de Custo'		
+		managed = False
+		db_table = "v_centro_custo"
+
+	centrocusto = models.IntegerField(primary_key=True)
+	local = models.CharField(max_length=500, blank=True, null=True)
+	descricao = models.CharField(max_length=500)
+	ativoinativoai = models.CharField(max_length=1)
+	codigoresponsavel = models.IntegerField()
+
+	def __unicode__(self):
+		return self.descricao
+
+	def __str__(self):
+		return self.descricao
+#---------------------------------------------------------------------------------------------
+# Model para a view V_ITEM
+#---------------------------------------------------------------------------------------------
+@python_2_unicode_compatible
+class v_item(models.Model):
+	class Meta:
+		verbose_name_plural = 'Itens'		
+		managed = False
+		db_table = "v_item"
+
+	item = models.IntegerField(primary_key=True)
+	unidade = models.CharField(max_length=10)
+	classificacao = models.CharField(max_length=10)
+	desc_classificacao = models.CharField(max_length=500)
+	desc_item = models.CharField(max_length=500)
+	estocavel = models.CharField(max_length=1)
+	ativoinativoai = models.CharField(max_length=1)
+	valor = models.CharField(max_length=100, blank=True, null=True)
+	ativo_classificacao = models.CharField(max_length=1)
+	itememanalisesn = models.CharField(max_length=1)
+
+	def __unicode__(self):
+		return self.desc_item
+
+	def __str__(self):
+		return self.desc_item		
+
 		
