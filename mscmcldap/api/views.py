@@ -31,7 +31,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
 @api_view(['GET'])
 def setores(request):
-	setores = v_setor.objects.filter(set_ativo=True)
+	setores = v_setor.objects.filter(set_ativo=True).order_by('set_nome')
 	serializer = SetorSerializer(setores, many=True)
 	return Response(serializer.data)
 
