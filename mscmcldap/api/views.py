@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -55,11 +56,14 @@ def pessoas(request):
 
 @api_view(['GET'])
 def setor(request, pes_matricula):
-	pessoa = v_pessoa.objects.filter(pes_matricula=pes_matricula).first()
-	setor = v_setor.objects.filter(set_id=pessoa.set_id).first()
-	serializer = SetorSerializer(setor, many=False)
-	return Response(serializer.data)	
-
+	try:
+		pessoa = v_pessoa.objects.get(pes_matricula=pes_matricula)
+		setor = v_setor.objects.get(set_id=pessoa.set_id)
+		serializer = SetorSerializer(setor, many=False)
+		return Response(serializer.data)		
+	except item.DoesNotExist:
+		raise Http404
+		
 @api_view(['GET'])
 def centros_custo(request):
 	centros_custo = v_centro_custo.objects.filter(ativoinativoai='A').order_by('descricao')
@@ -68,9 +72,12 @@ def centros_custo(request):
 
 @api_view(['GET'])
 def centro_custo(request, centro_custo):
-	centro_custo = v_centro_custo.objects.filter(centrocusto=centro_custo).first()
-	serializer = CentroCustoSerializer(centro_custo, many=False)
-	return Response(serializer.data)		
+	try:
+		centro_custo = v_centro_custo.objects.get(centrocusto=centro_custo)
+		serializer = CentroCustoSerializer(centro_custo, many=False)
+		return Response(serializer.data)		
+	except item.DoesNotExist:
+		raise Http404
 
 @api_view(['GET'])
 def itens(request):
@@ -80,12 +87,18 @@ def itens(request):
 
 @api_view(['GET'])
 def item(request, item_id):
-	item = v_item.objects.filter(item=item_id).first()
-	serializer = ItemSerializer(item, many=False)
-	return Response(serializer.data)			
+	try:
+		item = v_item.objects.get(item=item_id)
+		serializer = ItemSerializer(item, many=False)
+		return Response(serializer.data)			
+	except item.DoesNotExist:
+		raise Http404
 
 @api_view(['GET'])
 def setor_setor(request, set_id):
-	setor = v_setor.objects.filter(set_id=set_id).first()
-	serializer = SetorSerializer(setor, many=False)
-	return Response(serializer.data)		
+	try:
+		setor = v_setor.objects.get(set_id=set_id)
+		serializer = SetorSerializer(setor, many=False)
+		return Response(serializer.data)		
+	except item.DoesNotExist:
+		raise Http404
