@@ -16,7 +16,7 @@ class SetorAPITestCase(APITestCase):
 
 	def test_retorna_setores(self):
 		response = self.client.get('/api/setores/')
-		self.assertEqual(response.data[0]['set_nome'], 'Diretoria Geral')		
+		self.assertEqual(response.data[0]['set_nome'], 'Departamento de Administração e Finanças')		
 
 class PessoaAPITestCase(APITestCase):
 	fixtures = ['inicial.json']
