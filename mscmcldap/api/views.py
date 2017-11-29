@@ -67,7 +67,7 @@ def setor(request, pes_matricula):
 		setor = v_setor.objects.get(set_id=pessoa.set_id)
 		serializer = SetorSerializer(setor, many=False)
 		return Response(serializer.data)		
-	except item.DoesNotExist:
+	except setor.DoesNotExist:
 		raise Http404
 		
 @api_view(['GET'])
@@ -82,7 +82,7 @@ def centro_custo(request, centro_custo):
 		centro_custo = v_centro_custo.objects.get(centrocusto=centro_custo)
 		serializer = CentroCustoSerializer(centro_custo, many=False)
 		return Response(serializer.data)		
-	except item.DoesNotExist:
+	except centro_custo.DoesNotExist:
 		raise Http404
 
 @api_view(['GET'])
@@ -106,7 +106,7 @@ def setor_setor(request, set_id):
 		setor = v_setor.objects.get(set_id=set_id)
 		serializer = SetorSerializer(setor, many=False)
 		return Response(serializer.data)		
-	except item.DoesNotExist:
+	except setor.DoesNotExist:
 		raise Http404
 
 
@@ -128,5 +128,5 @@ def funcionario(request, pessoa):
 		funcionario = v_cmcfuncionarios.objects.get(pessoa=pessoa)
 		serializer = FuncionarioSerializer(funcionario, many=False)
 		return Response(serializer.data)		
-	except item.DoesNotExist:
+	except funcionario.DoesNotExist:
 		raise Http404	
