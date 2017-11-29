@@ -16,4 +16,7 @@ urlpatterns = [
 	url(r'^itens/$', views.itens, name='api-itens'),
 	url(r'^item/(?P<item_id>[0-9]+)/$', views.item, name='api-item'),
 	url(r'^setor_setor/(?P<set_id>[0-9]+)/$', views.setor_setor, name='api-setor-setor'),
+	url(r'^funcionarios/$', views.funcionarios, name='api-funcionarios'),
+	url(r'^funcionarios_setor/(?P<set_id>[0-9]+)/$', views.funcionarios_setor, name='api-funcionarios-setor'),
+	url(r'^funcionario/(?P<pessoa>[0-9]+)/$', views.funcionario, name='api-funcionario'),
 ]
