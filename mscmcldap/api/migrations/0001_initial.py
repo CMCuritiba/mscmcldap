@@ -24,6 +24,11 @@ class Migration(migrations.Migration):
         ),
         migrations.RunSQL(
             """
+            DROP TABLE IF EXISTS v_cmcfuncionarios;
+            """
+        ),
+        migrations.RunSQL(
+            """
             CREATE TABLE v_setor (
                 set_id serial primary key,
                 set_nome character varying(500) not null,
@@ -67,6 +72,18 @@ class Migration(migrations.Migration):
                 valor character varying(100),
                 ativo_classificacao character varying(1) not null,
                 itememanalisesn character varying(1) not null
+            );
+            """
+        ),
+        migrations.RunSQL(
+            """
+            CREATE TABLE v_cmcfuncionarios(
+                pessoa serial primary key,
+                matricula integer not null,
+                pes_nome character varying(500) not null,
+                funcao integer,
+                set_id character varying(100) not null,
+                ind_estagiario integer not null
             );
             """
         )

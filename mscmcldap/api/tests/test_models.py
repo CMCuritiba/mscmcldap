@@ -2,7 +2,7 @@
 
 from django.test import TestCase, RequestFactory
 from unittest.mock import patch, MagicMock, Mock
-from ..models import v_setor, v_pessoa, v_centro_custo, v_item
+from ..models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios
 from django.db import IntegrityError, DataError
 import os
 
@@ -39,3 +39,11 @@ class VCentroCustoTestCase(TestCase):
 	def test_view_v_centro_custo_ok(self):
 		vitem = v_item.objects.get(pk=838)
 		self.assertEqual(vitem.desc_item, "Lâmpada Suave 23w")		
+
+
+class VCMCFuncionarios(TestCase):
+	fixtures = ['inicial.json']
+
+	def test_view_v_cmcfuncionarios(self):
+		funcionario = v_cmcfuncionarios.objects.get(pk=5336)
+		self.assertEqual(funcionario.pes_nome, "KARINE MARINS")				
