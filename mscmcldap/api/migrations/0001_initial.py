@@ -82,7 +82,7 @@ class Migration(migrations.Migration):
                 matricula integer not null,
                 pes_nome character varying(500) not null,
                 funcao integer,
-                set_id character varying(100) not null,
+                set_id integer not null,
                 ind_estagiario integer not null
             );
             """

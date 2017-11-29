@@ -104,7 +104,7 @@ class v_cmcfuncionarios(models.Model):
 	matricula = models.IntegerField()
 	pes_nome = models.CharField(max_length=500)
 	funcao = models.IntegerField(blank=True, null=True)
-	set_id = models.CharField(max_length=100)
+	set_id = models.IntegerField()
 	ind_estagiario = models.IntegerField()
 
 	def __unicode__(self):
