@@ -94,4 +94,23 @@ class v_item(models.Model):
 	def __str__(self):
 		return self.desc_item		
 
+@python_2_unicode_compatible
+class v_cmcfuncionarios(models.Model):
+	class Meta:
+		managed = False
+		db_table = "v_cmcfuncionarios"
+
+	pessoa = models.IntegerField(primary_key=True)
+	matricula = models.IntegerField()
+	pes_nome = models.CharField(max_length=500)
+	funcao = models.IntegerField(blank=True, null=True)
+	set_id = models.IntegerField()
+	ind_estagiario = models.IntegerField()
+
+	def __unicode__(self):
+		return self.pes_nome
+
+	def __str__(self):
+		return self.pes_nome				
+
 		

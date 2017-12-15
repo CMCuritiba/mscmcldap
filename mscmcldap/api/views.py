@@ -8,7 +8,7 @@ from rest_framework import fields, serializers
 from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view
 
-from .models import v_setor, v_pessoa, v_centro_custo, v_item
+from .models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios
 
 class SetorSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -29,6 +29,12 @@ class ItemSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = v_item
 		fields = ('item', 'unidade', 'classificacao', 'desc_classificacao', 'desc_item', 'estocavel', 'ativoinativoai', 'valor', 'ativo_classificacao', 'itememanalisesn')						
+
+class FuncionarioSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = v_cmcfuncionarios
+		fields = ('matricula', 'pessoa', 'pes_nome', 'funcao', 'set_id', 'ind_estagiario')								
+
 
 @api_view(['GET'])
 def setores(request):
@@ -61,7 +67,7 @@ def setor(request, pes_matricula):
 		setor = v_setor.objects.get(set_id=pessoa.set_id)
 		serializer = SetorSerializer(setor, many=False)
 		return Response(serializer.data)		
-	except item.DoesNotExist:
+	except setor.DoesNotExist:
 		raise Http404
 		
 @api_view(['GET'])
@@ -76,7 +82,7 @@ def centro_custo(request, centro_custo):
 		centro_custo = v_centro_custo.objects.get(centrocusto=centro_custo)
 		serializer = CentroCustoSerializer(centro_custo, many=False)
 		return Response(serializer.data)		
-	except item.DoesNotExist:
+	except centro_custo.DoesNotExist:
 		raise Http404
 
 @api_view(['GET'])
@@ -100,5 +106,27 @@ def setor_setor(request, set_id):
 		setor = v_setor.objects.get(set_id=set_id)
 		serializer = SetorSerializer(setor, many=False)
 		return Response(serializer.data)		
-	except item.DoesNotExist:
+	except setor.DoesNotExist:
 		raise Http404
+
+
+@api_view(['GET'])
+def funcionarios(request):
+	funcionarios = v_cmcfuncionarios.objects.all().order_by('pes_nome')
+	serializer = FuncionarioSerializer(funcionarios, many=True)
+	return Response(serializer.data)			
+
+@api_view(['GET'])
+def funcionarios_setor(request, set_id):
+	funcionarios = v_cmcfuncionarios.objects.filter(set_id=set_id).order_by('pes_nome')
+	serializer = FuncionarioSerializer(funcionarios, many=True)
+	return Response(serializer.data)				
+
+@api_view(['GET'])
+def funcionario(request, pessoa):
+	try:
+		funcionario = v_cmcfuncionarios.objects.get(pessoa=pessoa)
+		serializer = FuncionarioSerializer(funcionario, many=False)
+		return Response(serializer.data)		
+	except funcionario.DoesNotExist:
+		raise Http404	

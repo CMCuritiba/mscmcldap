@@ -91,6 +91,17 @@
             "ativo_classificacao": "S",
             "itememanalisesn": "N"
         }
+    },
+    {
+        "model": "api.v_cmcfuncionarios", 
+        "fields": {
+            "matricula": 1778,
+            "pessoa": 5336,
+            "pes_nome": "KARINE MARINS",
+            "set_id": 382,
+            "ind_estagiario": 1
+        }
     }
+
 
 ]
