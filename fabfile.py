@@ -11,7 +11,7 @@ HTML = '/var/www/html'
 ENVS = '/usr/share/envs'
 PROJECT_ROOT = WEBAPPS + '/%s' % PROJECT_NAME
 REPO = 'https://github.com/CMCuritiba/mscmcldap.git'
-USERAPP = 'cmc-apps'
+USERAPP = 'www-data'
 ENV_NAME = 'mscmc'
 
 env.hosts = []
@@ -172,7 +172,7 @@ def bootstrap():
 
 		with source_virtualenv():
 			# Ativa o ambiente virtual 
-			sudo(env.activate, user='cmc-apps')
+			sudo(env.activate, user='www-data')
 
 			# Instala todos os pacotes no servidor 
 			sudo('pip install -r requirements/production.txt')
@@ -185,13 +185,19 @@ def manage_collectstatic():
 	with cd(PROJECT_ROOT):
 		with source_virtualenv():
 			# Gera todos os arquivos css/js
-			sudo('python manage.py collectstatic --settings=config.settings.production', user='cmc-apps')
+			sudo('python manage.py collectstatic --settings=config.settings.production', user='www-data')
 
 @task
 def git_update():
 	with cd(PROJECT_ROOT):
 		# Atualiza servidor com última versão do master
-		sudo('git pull origin master', user='cmc-apps')
+		sudo('git pull origin master', user='www-data')
+		if env.environment == 'staging':
+			sudo('chmod a+x {}/deploy/staging/run.sh'.format(PROJECT_ROOT))
+		elif env.environment == 'production':
+			sudo('chmod a+x {}/deploy/production/run.sh'.format(PROJECT_ROOT))
+		else:
+			print('Nenhum ambiente selecionado. Defina staging ou production.')
 
 @task 
 def cria_links():
