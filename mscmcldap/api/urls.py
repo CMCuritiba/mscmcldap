@@ -19,4 +19,5 @@ urlpatterns = [
 	url(r'^funcionarios/$', views.funcionarios, name='api-funcionarios'),
 	url(r'^funcionarios_setor/(?P<set_id>[0-9]+)/$', views.funcionarios_setor, name='api-funcionarios-setor'),
 	url(r'^funcionario/(?P<pessoa>[0-9]+)/$', views.funcionario, name='api-funcionario'),
+	url(r'^funcionario_matricula/(?P<matricula>[0-9]+)/$', views.funcionario_matricula, name='api-funcionario-matricula'),
 ]

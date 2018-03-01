@@ -50,7 +50,10 @@ def pessoas_setor(request, set_id):
 
 @api_view(['GET'])
 def pessoa(request, pes_matricula):
+	print('------------------1')
 	pessoa = v_pessoa.objects.get(pes_matricula=pes_matricula)
+	print(pessoa)
+	print('------------------2')
 	serializer = PessoaSerializer(pessoa)
 	return Response(serializer.data)
 
@@ -130,3 +133,12 @@ def funcionario(request, pessoa):
 		return Response(serializer.data)		
 	except funcionario.DoesNotExist:
 		raise Http404	
+
+@api_view(['GET'])
+def funcionario_matricula(request, matricula):
+	try:
+		funcionario = v_cmcfuncionarios.objects.get(matricula=matricula)
+		serializer = FuncionarioSerializer(funcionario, many=False)
+		return Response(serializer.data)		
+	except funcionario.DoesNotExist:
+		raise Http404			
