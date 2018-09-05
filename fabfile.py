@@ -191,7 +191,7 @@ def manage_collectstatic():
 def git_update():
 	with cd(PROJECT_ROOT):
 		# Atualiza servidor com última versão do master
-		sudo('git pull origin master', user='www-data')
+		sudo('git pull origin master')
 		if env.environment == 'staging':
 			sudo('chmod a+x {}/deploy/staging/run.sh'.format(PROJECT_ROOT))
 		elif env.environment == 'production':

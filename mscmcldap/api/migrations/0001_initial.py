@@ -86,6 +86,47 @@ class Migration(migrations.Migration):
                 ind_estagiario integer not null
             );
             """
+        ),
+        migrations.RunSQL(
+            """
+            CREATE TABLE v_spl_reuniao_comissao(
+                rec_id serial primary key,
+                con_id integer not null,
+                rec_tipo_reuniao character varying(500) not null,
+                rec_numero character varying(100),
+                versao integer,
+                rec_data date
+            );
+            """
+        ),
+        migrations.RunSQL(
+            """
+            CREATE TABLE v_spl_conjunto_vereadores(
+                con_id serial primary key,
+                con_sigla character varying(500),
+                con_maximo integer,
+                ut_id integer,
+                ini_nome text,
+                ini_ativa boolean,
+                tin_id integer,
+                versao integer,
+                ini_codigo_prefeitura integer,
+                con_descricao text,
+                con_site_ordem integer,
+                con_email character varying(500)
+            );
+            """
+        ),
+        migrations.RunSQL(
+            """
+            CREATE TABLE v_spl_pauta_comissao(
+                pac_id serial primary key,
+                rec_id integer not null,
+                pac_liberada boolean,
+                pac_notificada boolean,
+                versao integer
+            );
+            """
         )
     ]
 
