@@ -157,8 +157,7 @@ def spl_reuniao_comissao(request):
 			e_json['rec_tipo_reuniao'] = c.rec_tipo_reuniao
 			e_json['rec_numero'] = c.rec_numero
 			e_json['versao'] = c.versao
-			e_json['rec_data'] = c.rec_data
-			e_json['rec_data'] = c.rec_data
+			e_json['rec_data'] = c.rec_data.strftime("%d/%m/%Y")
 			e_json['pac_id'] = pauta.pac_id
 			reunioes_json.append(e_json)
 
