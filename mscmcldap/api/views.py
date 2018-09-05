@@ -7,8 +7,9 @@ from rest_framework import status
 from rest_framework import fields, serializers
 from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view
+import datetime
 
-from .models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios
+from .models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios, v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao
 
 class SetorSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -35,7 +36,6 @@ class FuncionarioSerializer(serializers.ModelSerializer):
 		model = v_cmcfuncionarios
 		fields = ('matricula', 'pessoa', 'pes_nome', 'funcao', 'set_id', 'ind_estagiario')								
 
-
 @api_view(['GET'])
 def setores(request):
 	setores = v_setor.objects.filter(set_ativo=True).order_by('set_nome')
@@ -50,10 +50,7 @@ def pessoas_setor(request, set_id):
 
 @api_view(['GET'])
 def pessoa(request, pes_matricula):
-	print('------------------1')
 	pessoa = v_pessoa.objects.get(pes_matricula=pes_matricula)
-	print(pessoa)
-	print('------------------2')
 	serializer = PessoaSerializer(pessoa)
 	return Response(serializer.data)
 
@@ -142,3 +139,27 @@ def funcionario_matricula(request, matricula):
 		return Response(serializer.data)		
 	except funcionario.DoesNotExist:
 		raise Http404			
+
+@api_view(['GET'])
+def spl_reuniao_comissao(request):
+	reunioes_json = []
+	hoje = datetime.datetime.now()
+	reunioes = v_spl_reuniao_comissao.objects.filter(rec_data=hoje)
+	for c in reunioes:
+		pauta = v_spl_pauta_comissao.objects.get(rec_id=c.rec_id)
+		if pauta.pac_liberada :
+			conjunto = v_spl_conjunto_vereadores.objects.get(con_id=c.con_id)
+			e_json = {}
+			e_json['rec_id'] = c.rec_id
+			e_json['con_id'] = c.con_id
+			e_json['con_desc'] = conjunto.ini_nome
+			e_json['con_sigla'] = conjunto.con_sigla
+			e_json['rec_tipo_reuniao'] = c.rec_tipo_reuniao
+			e_json['rec_numero'] = c.rec_numero
+			e_json['versao'] = c.versao
+			e_json['rec_data'] = c.rec_data
+			e_json['rec_data'] = c.rec_data
+			e_json['pac_id'] = pauta.pac_id
+			reunioes_json.append(e_json)
+
+	return JsonResponse(reunioes_json, safe=False)	

@@ -101,6 +101,44 @@
             "set_id": 382,
             "ind_estagiario": 1
         }
+    },
+    {
+        "model": "api.v_spl_reuniao_comissao", 
+        "fields": {
+            "rec_id": 3,
+            "con_id": 699,
+            "rec_tipo_reuniao": "Ordinária",
+            "rec_numero": "3-------3",
+            "versao": 0,
+            "rec_data": "2014-08-04"
+        }
+    },
+    {
+        "model": "api.v_spl_conjunto_vereadores", 
+        "fields": {
+            "con_id": 1,
+            "con_sigla": "C.Executiva",
+            "con_maximo": null,
+            "ut_id": 618,
+            "ini_nome": "Comissão Executiva",
+            "ini_ativa": true,
+            "tin_id": 8,
+            "versao": 0,
+            "ini_codigo_prefeitura": 141,
+            "con_descricao": "",
+            "con_site_ordem": 1,
+            "con_email": ""
+        }
+    },
+    {
+        "model": "api.v_spl_pauta_comissao", 
+        "fields": {
+            "pac_id": 1,
+            "rec_id": 1806,
+            "pac_liberada": true,
+            "pac_notificada": true,
+            "versao": 2
+        }
     }
 
 

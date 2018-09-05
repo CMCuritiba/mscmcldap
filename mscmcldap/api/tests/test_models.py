@@ -2,7 +2,7 @@
 
 from django.test import TestCase, RequestFactory
 from unittest.mock import patch, MagicMock, Mock
-from ..models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios
+from ..models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios, v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao
 from django.db import IntegrityError, DataError
 import os
 
@@ -47,3 +47,24 @@ class VCMCFuncionarios(TestCase):
 	def test_view_v_cmcfuncionarios(self):
 		funcionario = v_cmcfuncionarios.objects.get(pk=5336)
 		self.assertEqual(funcionario.pes_nome, "KARINE MARINS")				
+
+class VSPLReuniaoComissao(TestCase):
+	fixtures = ['inicial.json']
+
+	def test_view_v_spl_reuniao_comissao(self):
+		reuniao = v_spl_reuniao_comissao.objects.get(pk=3)
+		self.assertEqual(reuniao.con_id, 699)						
+
+class VSPLConjuntoVereadores(TestCase):
+	fixtures = ['inicial.json']
+
+	def test_view_v_spl_conjunto_vereadores(self):
+		conjunto = v_spl_conjunto_vereadores.objects.get(pk=1)
+		self.assertEqual(conjunto.con_sigla, "C.Executiva")								
+
+class VSPLPautaComissao(TestCase):
+	fixtures = ['inicial.json']
+
+	def test_view_v_spl_pauta_comissao(self):
+		pauta = v_spl_pauta_comissao.objects.get(pk=1)
+		self.assertEqual(pauta.rec_id, 1806)										

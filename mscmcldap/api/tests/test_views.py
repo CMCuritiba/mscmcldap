@@ -102,3 +102,15 @@ class FuncionariosAPITestCase(APITestCase):
 	def test_retorna_funcionario_id(self):
 		response = self.client.get('/api/funcionario/5336/')
 		self.assertEqual(response.data['pes_nome'], 'KARINE MARINS')		
+
+class SPLReuniaoComissaoAPITestCase(APITestCase):
+	fixtures = ['inicial.json']
+
+	def setUp(self):
+		super(SPLReuniaoComissaoAPITestCase, self).setUp()
+		self.factory = APIRequestFactory()		
+
+	def test_retorna_link_ok(self):
+		response = self.client.get('/api/spl/reuniao_comissao/')
+		self.assertEqual(response.status_code, 200)				
+
