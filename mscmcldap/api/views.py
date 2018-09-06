@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import fields, serializers
 from django.http import HttpResponse, JsonResponse
+from django.db import connection  
 from rest_framework.decorators import api_view
 import datetime
 
@@ -162,3 +163,24 @@ def spl_reuniao_comissao(request):
 			reunioes_json.append(e_json)
 
 	return JsonResponse(reunioes_json, safe=False)	
+
+@api_view(['GET'])
+def spl_projetos_reuniao(request, reuniao):
+	projetos_json = []
+	c = connection.cursor()
+	c.callproc("fn_remoto_projetos_reuniao", [reuniao,])
+	projetos = c.fetchall()
+	c.close()
+	for p in projetos:
+		e_json = {}
+		e_json['pac_id'] = p[0]
+		e_json['par_id'] = p[1]
+		e_json['codigo_proposicao'] = p[2]
+		e_json['iniciativa'] = p[3]
+		e_json['sumula'] = p[4]
+		e_json['relator'] = p[5]
+		e_json['conclusao_relator'] = p[6]
+		e_json['conclusao_comissao'] = p[7]
+		e_json['tem_emendas'] = p[8]
+		projetos_json.append(e_json)
+	return JsonResponse(projetos_json, safe=False)		
