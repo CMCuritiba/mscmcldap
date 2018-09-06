@@ -149,7 +149,7 @@ class v_spl_conjunto_vereadores(models.Model):
 
 	con_id = models.IntegerField(primary_key=True)
 	con_sigla = models.CharField(max_length=200)
-	con_maximo = models.IntegerField()
+	con_maximo = models.IntegerField(blank=True, null=True)
 	ut_id = models.IntegerField()
 	ini_nome = models.CharField(max_length=500)
 	ini_ativa = models.BooleanField()
