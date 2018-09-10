@@ -1,0 +1,29 @@
+CREATE TYPE projeto_reuniao AS (
+	pac_id integer,
+	par_id integer,
+	codigo_proposicao character varying,
+	iniciativa text,
+	sumula character varying,
+	relator character varying(100),
+	conclusao_relator character varying(40), 
+	conclusao_comissao character varying(40),
+	tem_emendas boolean
+);
+
+CREATE OR REPLACE FUNCTION fn_remoto_projetos_reuniao(pac_id int)
+  RETURNS SETOF projeto_reuniao AS
+$$
+
+	SELECT t.pac_id,
+	    t.par_id,
+	    t.codigo_proposicao,
+	    t.iniciativa,
+	    t.sumula,
+	    t.relator,
+	    t.conclusao_relator,
+	    t.conclusao_comissao,
+	    t.tem_emendas
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pac_id, par_id, codigo_proposicao, iniciativa, sumula, relator, conclusao_relator, conclusao_comissao, tem_emendas from spl.proposicoes_pauta_reuniao where pac_id = '::text || $1) t(pac_id integer, par_id integer, codigo_proposicao character varying, iniciativa text, sumula character varying, relator character varying(100), conclusao_relator character varying(40), conclusao_comissao character varying(40), tem_emendas boolean)
+
+$$
+  LANGUAGE 'sql' VOLATILE;     
