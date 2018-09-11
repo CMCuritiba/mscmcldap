@@ -186,3 +186,24 @@ def spl_projetos_reuniao(request, reuniao):
 		e_json['tem_emendas'] = p[8]
 		projetos_json.append(e_json)
 	return JsonResponse(projetos_json, safe=False)		
+
+@api_view(['GET'])
+def spl_projeto_reuniao(request, pac_id, par_id):
+	projetos_json = []
+	c = connection.cursor()
+	c.callproc("fn_remoto_projeto_reuniao", [pac_id, par_id,])
+	projetos = c.fetchall()
+	c.close()
+	for p in projetos:
+		e_json = {}
+		e_json['pac_id'] = p[0]
+		e_json['par_id'] = p[1]
+		e_json['codigo_proposicao'] = p[2]
+		e_json['iniciativa'] = p[3]
+		e_json['sumula'] = p[4]
+		e_json['relator'] = p[5]
+		e_json['conclusao_relator'] = p[6]
+		e_json['conclusao_comissao'] = p[7]
+		e_json['tem_emendas'] = p[8]
+		projetos_json.append(e_json)
+	return JsonResponse(projetos_json, safe=False)			
