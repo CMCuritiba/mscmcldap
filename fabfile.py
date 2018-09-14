@@ -63,6 +63,12 @@ def chown():
 	sudo('chown -R {}:{} {}'.format(USERAPP, USERAPP, ENVS))
 	sudo('chown -R {}:{} {}'.format(USERAPP, env.wwwdata, HTML + '/' + PROJECT_NAME))	
 
+def des_chown():
+	''' Seta permissões ao usuário/grupo corretos '''
+	sudo('chown -R {} {}'.format(env.user, PROJECT_ROOT))
+	sudo('chown -R {} {}'.format(env.user, ENVS))
+	sudo('chown -R {} {}'.format(env.user, HTML + '/' + PROJECT_NAME))		
+
 def cria_webapps():
 	sudo('mkdir -p {}'.format(WEBAPPS))
 	sudo('mkdir -p {}'.format(PROJECT_ROOT))
@@ -217,3 +223,15 @@ def restart_nginx_supervisor():
 	sudo('supervisorctl reload')
 	sudo('supervisorctl restart {}'.format(ENV_NAME))
 	sudo('service nginx restart')
+
+@task
+def update_autenticacao():
+	des_chown()
+	with cd(PROJECT_ROOT):
+		with source_virtualenv():
+			# Roda o bower install
+			sudo('pip install https://github.com/CMCuritiba/django-cmcldapauth/raw/master/dist/django-cmcldapauth-0.3.tar.gz --upgrade --no-cache-dir')
+			#run('python manage.py makemigrations votacao --settings=config.settings.production')
+			#run('./manage.py makemigrations autentica --settings=config.settings.production')
+			#run('./manage.py makemigrations cadastro --settings=config.settings.production')
+	chown()			

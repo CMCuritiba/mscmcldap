@@ -126,10 +126,7 @@ def funcionarios_setor(request, set_id):
 @api_view(['GET'])
 def funcionario(request, pessoa):
 	try:
-		print('------------------11')
 		func = v_cmcfuncionarios.objects.get(pessoa=pessoa)
-		print('------------------12')
-		print(func)
 		serializer = FuncionarioSerializer(func, many=False)
 		return Response(serializer.data)		
 	except v_cmcfuncionarios.DoesNotExist:
