@@ -219,10 +219,10 @@ def spl_reuniao_comissao_range(request, data_inicio, data_fim):
 	inicio = formataData(data_inicio)
 	fim = formataData(data_fim)
 
-	if data_fim is not None:
+	if fim is not None:
 		reunioes = v_spl_reuniao_comissao.objects.filter(rec_data__range=(inicio, fim))
-	elif data_inicio is not None:
-		reunioes = v_spl_reuniao_comissao.objects.filter(rec_data >= inicio)		
+	elif inicio is not None:
+		reunioes = v_spl_reuniao_comissao.objects.filter(rec_data__gte=inicio)		
 	for c in reunioes:
 		pauta = v_spl_pauta_comissao.objects.get(rec_id=c.rec_id)
 		if pauta.pac_liberada :
