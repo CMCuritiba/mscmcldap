@@ -9,6 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from django.db import connection  
 from rest_framework.decorators import api_view
 import datetime
+from mscmcldap.util.date_util import formataData
 
 from .models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios, v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao
 
@@ -207,3 +208,35 @@ def spl_projeto_reuniao(request, pac_id, par_id):
 		e_json['tem_emendas'] = p[8]
 		projetos_json.append(e_json)
 	return JsonResponse(projetos_json, safe=False)			
+
+#---------------------------------------------------------------------------------------------------
+# api que retorna as reuniões dentro de um range de datas
+#---------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def spl_reuniao_comissao_range(request, data_inicio, data_fim):
+	reunioes_json = []
+
+	inicio = formataData(data_inicio)
+	fim = formataData(data_fim)
+
+	if data_fim is not None:
+		reunioes = v_spl_reuniao_comissao.objects.filter(rec_data__range=(inicio, fim))
+	elif data_inicio is not None:
+		reunioes = v_spl_reuniao_comissao.objects.filter(rec_data >= inicio)		
+	for c in reunioes:
+		pauta = v_spl_pauta_comissao.objects.get(rec_id=c.rec_id)
+		if pauta.pac_liberada :
+			conjunto = v_spl_conjunto_vereadores.objects.get(con_id=c.con_id)
+			e_json = {}
+			e_json['rec_id'] = c.rec_id
+			e_json['con_id'] = c.con_id
+			e_json['con_desc'] = conjunto.ini_nome
+			e_json['con_sigla'] = conjunto.con_sigla
+			e_json['rec_tipo_reuniao'] = c.rec_tipo_reuniao
+			e_json['rec_numero'] = c.rec_numero
+			e_json['versao'] = c.versao
+			e_json['rec_data'] = c.rec_data.strftime("%d/%m/%Y")
+			e_json['pac_id'] = pauta.pac_id
+			reunioes_json.append(e_json)
+
+	return JsonResponse(reunioes_json, safe=False)		
