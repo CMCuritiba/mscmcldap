@@ -139,6 +139,38 @@
             "pac_notificada": true,
             "versao": 2
         }
+    },
+    {
+        "model": "api.v_spl_vereador",
+        "fields": {
+            "ver_id": 5,
+            "matricula": 1097,
+            "ver_sexo": "M",
+            "ut_id": 105,
+            "ini_nome": "Beto Moraes",
+            "ini_ativa": true,
+            "ver_nome_completo": "Gilberto Pires dos Santos",
+            "ini_codigo_prefeitura": 5,
+            "ver_site": "www.betomoraes.com.br",
+            "ver_biografia": "",
+            "ver_redes_sociais": "Facebook: https://www.facebook.com/verbetomoraes",
+            "ver_fone_principal": "3350 4943",
+            "ver_fones": "3350 4945 / 3350 4947",
+            "ver_legislaturas": "2005 / 2009 / 2013 / 2017",
+            "ver_localizacao": "Anexo I - 2º andar - Sl. 3",
+            "ver_partido": "PSDB",
+            "arq_id": 50976,
+            "arq_id_biografia": 50945
+        }
+    },
+    {
+        "model": "api.v_spl_cargos_mesa",
+        "fields": {
+            "matricula": 1094,
+            "ini_nome": "Sergio R. B. Balaguer (Serginho do Posto)",
+            "crg_nome": "Presidente",
+            "crg_ordem": 1
+        }
     }
 
 
