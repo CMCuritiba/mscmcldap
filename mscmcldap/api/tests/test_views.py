@@ -114,3 +114,35 @@ class SPLReuniaoComissaoAPITestCase(APITestCase):
 		response = self.client.get('/api/spl/reuniao_comissao/')
 		self.assertEqual(response.status_code, 200)				
 
+
+class VereadoresAPITestCase(APITestCase):
+	fixtures = ['inicial.json']
+
+	def setUp(self):
+		super(VereadoresAPITestCase, self).setUp()
+		self.factory = APIRequestFactory()
+
+	def test_retorna_vereadores_link_ok(self):
+		response = self.client.get('/api/spl/vereadores/')
+		self.assertEqual(response.status_code, 200)
+
+	def test_retorna_vereador_matricula(self):
+		response = self.client.get('/api/spl/vereador_matricula/1097/')
+		self.assertEqual(response.data['ini_nome'], 'Beto Moraes')
+
+
+class CargosMesaAPITestCase(APITestCase):
+	fixtures = ['inicial.json']
+
+	def setUp(self):
+		super(CargosMesaAPITestCase, self).setUp()
+		self.factory = APIRequestFactory()
+
+	def test_retorna_cargos_mesa_link_ok(self):
+		response = self.client.get('/api/spl/cargos_mesa/')
+		self.assertEqual(response.status_code, 200)
+
+	def test_retorna_cargos_mesa(self):
+		response = self.client.get('/api/spl/cargos_mesa/')
+		self.assertEqual(response.data[0]['matricula'], '1094')
+
