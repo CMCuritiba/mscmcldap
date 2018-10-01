@@ -75,12 +75,12 @@ class VSPLVereador(TestCase):
 
 	def test_view_v_spl_vereador(self):
 		vereador = v_spl_vereador.objects.get(pk=5)
-		self.assertEqual(vereador.matricula, 1097)
+		self.assertEqual(vereador.matricula, "1097")
 
 
 class VSPLCargosMesa(TestCase):
 	fixtures = ['inicial.json']
 
 	def test_view_v_spl_cargos_mesa(self):
-		cargos_mesa = v_spl_cargos_mesa.objects.get(pk=1094)
+		cargos_mesa = v_spl_cargos_mesa.objects.get(pk="1094")
 		self.assertEqual(cargos_mesa.ini_nome, "Sergio R. B. Balaguer (Serginho do Posto)")
