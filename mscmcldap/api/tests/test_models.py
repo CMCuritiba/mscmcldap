@@ -2,7 +2,7 @@
 
 from django.test import TestCase, RequestFactory
 from unittest.mock import patch, MagicMock, Mock
-from ..models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios, v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao
+from ..models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios, v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao, v_spl_vereador, v_spl_cargos_mesa
 from django.db import IntegrityError, DataError
 import os
 
@@ -67,4 +67,20 @@ class VSPLPautaComissao(TestCase):
 
 	def test_view_v_spl_pauta_comissao(self):
 		pauta = v_spl_pauta_comissao.objects.get(pk=1)
-		self.assertEqual(pauta.rec_id, 1806)										
+		self.assertEqual(pauta.rec_id, 1806)
+
+
+class VSPLVereador(TestCase):
+	fixtures = ['inicial.json']
+
+	def test_view_v_spl_vereador(self):
+		vereador = v_spl_vereador.objects.get(pk=5)
+		self.assertEqual(vereador.matricula, 1097)
+
+
+class VSPLCargosMesa(TestCase):
+	fixtures = ['inicial.json']
+
+	def test_view_v_spl_cargos_mesa(self):
+		cargos_mesa = v_spl_cargos_mesa.objects.get(pk=1094)
+		self.assertEqual(cargos_mesa.ini_nome, "Sergio R. B. Balaguer (Serginho do Posto)")
