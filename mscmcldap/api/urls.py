@@ -22,6 +22,7 @@ urlpatterns = [
 	url(r'^funcionario_matricula/(?P<matricula>[0-9]+)/$', views.funcionario_matricula, name='api-funcionario-matricula'),
 	url(r'^spl/reuniao_comissao/$', views.spl_reuniao_comissao, name='api-spl-reuniao-comissao'),
 	url(r'^spl/projetos_reuniao/(?P<reuniao>[0-9]+)/$', views.spl_projetos_reuniao, name='api-spl-projetos-reuniao'),
+	url(r'^spl/projeto_reuniao/(?P<pac_id>[0-9]+)/(?P<par_id>[0-9]+)/$', views.spl_projeto_reuniao, name='api-spl-projeto-reuniao'),
 	url(r'^spl/reuniao_comissao_range/(?P<data_inicio>\d{8})/(?P<data_fim>\d{8})/$', views.spl_reuniao_comissao_range, name='api-spl-reuniao-comissao-range'),
 	url(r'^spl/vereadores/$', views.spl_vereadores, name='api-spl-vereadores'),
 	url(r'^spl/vereador_matricula/(?P<matricula>[0-9]+)/$', views.spl_vereador_matricula, name='api-spl-vereador-matricula'),
