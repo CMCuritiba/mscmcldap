@@ -127,7 +127,42 @@ class Migration(migrations.Migration):
                 versao integer
             );
             """
+        ),
+        migrations.RunSQL(
+            """
+            CREATE TABLE v_spl_cargos_mesa(
+                matricula serial primary key,
+                ini_nome text,
+                crg_nome character varying(50),
+                crg_ordem integer
+            );
+            """
+        ),
+        migrations.RunSQL(
+            """
+            CREATE TABLE v_spl_vereador(
+                matricula character varying(4),
+                ver_id integer,
+                ver_sexo character(1),
+                ut_id integer,
+                ini_nome character varying(100),
+                ini_ativa boolean,
+                ver_nome_completo character varying(100),
+                ini_codigo_prefeitura integer,
+                ver_site character varying(250),
+                ver_biografia text,
+                ver_redes_sociais character varying(250),
+                ver_fone_principal character varying(20),
+                ver_fones character varying(100),
+                ver_legislaturas character varying(100),
+                ver_localizacao character varying(50),
+                ver_partido character varying(100),
+                arq_id integer,
+                arq_id_biografia integer
+            );
+            """
         )
+
     ]
 
     print('Finalizando comandos SQL para mockar views')

@@ -10,9 +10,8 @@ from django.http import HttpResponse, JsonResponse
 from django.db import connection
 from rest_framework.decorators import api_view
 import datetime
-from mscmcldap.util.date_util import formataData
-
-from ...api.spl.models import v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao, v_spl_vereador, v_spl_cargos_mesa
+from ...util.date_util import formataData
+from ..models import v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao, v_spl_vereador, v_spl_cargos_mesa
 
 
 class VereadorSerializer(serializers.ModelSerializer):

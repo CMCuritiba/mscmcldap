@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework.test import APITestCase, APIRequestFactory, APIClient
-from mscmcldap.api.models import v_setor, v_pessoa
+
 
 class SetorAPITestCase(APITestCase):
 	fixtures = ['inicial.json']

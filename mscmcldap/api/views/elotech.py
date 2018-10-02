@@ -9,9 +9,9 @@ from django.http import HttpResponse, JsonResponse
 from django.db import connection
 from rest_framework.decorators import api_view
 import datetime
-from mscmcldap.util.date_util import formataData
+from ...util.date_util import formataData
 
-from .models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios
+from ..models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios
 
 
 class SetorSerializer(serializers.ModelSerializer):
