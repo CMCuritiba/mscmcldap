@@ -116,6 +116,7 @@ class v_cmcfuncionarios(models.Model):
 	def __str__(self):
 		return self.pes_nome				
 
+
 #---------------------------------------------------------------------------------------------
 # Model para a view V_SPL_REUNIAO_COMISSAO
 #---------------------------------------------------------------------------------------------
@@ -136,7 +137,8 @@ class v_spl_reuniao_comissao(models.Model):
 		return self.rec_tipo_reuniao
 
 	def __str__(self):
-		return self.rec_tipo_reuniao				
+		return self.rec_tipo_reuniao
+
 
 #---------------------------------------------------------------------------------------------
 # Model para a view V_CONJUNTO_VEREADORES
@@ -165,7 +167,8 @@ class v_spl_conjunto_vereadores(models.Model):
 		return self.ini_nome
 
 	def __str__(self):
-		return self.ini_nome						
+		return self.ini_nome
+
 
 #---------------------------------------------------------------------------------------------
 # Model para a view V_PAUTA_COMISSAO
@@ -186,7 +189,8 @@ class v_spl_pauta_comissao(models.Model):
 		return self.pac_id
 
 	def __str__(self):
-		return self.pac_id								
+		return self.pac_id
+
 
 # ---------------------------------------------------------------------------------------------
 # Model para a view V_VEREADOR
@@ -222,6 +226,7 @@ class v_spl_vereador(models.Model):
     def __str__(self):
         return self.ini_nome
 
+
 # ---------------------------------------------------------------------------------------------
 # Model para a view V_CARGO_MESA
 # ---------------------------------------------------------------------------------------------
@@ -232,7 +237,7 @@ class v_spl_cargos_mesa(models.Model):
         db_table = "v_spl_cargos_mesa"
 
     matricula = models.CharField(primary_key=True, max_length=4)
-    ini_nome = models.TextField()
+    ini_nome = models.CharField(max_length=100)
     crg_nome = models.CharField(max_length=50)
     crg_ordem = models.IntegerField()
 
