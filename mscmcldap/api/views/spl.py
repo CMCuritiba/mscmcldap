@@ -189,7 +189,7 @@ def spl_get_reuniao(request, rec_id):
         e_json['con_id'] = reuniao.con_id
         e_json['rec_tipo_reuniao'] = reuniao.rec_tipo_reuniao
         e_json['rec_numero'] = reuniao.rec_numero
-        e_json['rec_data'] = reuniao.rec_data
+        e_json['rec_data'] = reuniao.rec_data.strftime("%d/%m/%Y")
         reuniao_json.append(e_json)        
     return JsonResponse(reuniao_json, safe=False)    
 
