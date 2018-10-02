@@ -103,7 +103,7 @@
         }
     },
     {
-        "model": "api.v_spl_reuniao_comissao", 
+        "model": "api.spl.v_spl_reuniao_comissao",
         "fields": {
             "rec_id": 3,
             "con_id": 699,
@@ -114,7 +114,7 @@
         }
     },
     {
-        "model": "api.v_spl_conjunto_vereadores", 
+        "model": "api.spl.v_spl_conjunto_vereadores",
         "fields": {
             "con_id": 1,
             "con_sigla": "C.Executiva",
@@ -131,7 +131,7 @@
         }
     },
     {
-        "model": "api.v_spl_pauta_comissao", 
+        "model": "api.spl.v_spl_pauta_comissao",
         "fields": {
             "pac_id": 1,
             "rec_id": 1806,
@@ -141,7 +141,7 @@
         }
     },
     {
-        "model": "api.v_spl_vereador",
+        "model": "api.spl.v_spl_vereador",
         "fields": {
             "ver_id": 5,
             "matricula": 1097,
@@ -164,7 +164,7 @@
         }
     },
     {
-        "model": "api.v_spl_cargos_mesa",
+        "model": "api.spl.v_spl_cargos_mesa",
         "fields": {
             "matricula": 1094,
             "ini_nome": "Sergio R. B. Balaguer (Serginho do Posto)",
