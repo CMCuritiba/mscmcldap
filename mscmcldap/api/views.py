@@ -11,8 +11,7 @@ from rest_framework.decorators import api_view
 import datetime
 from mscmcldap.util.date_util import formataData
 
-from .models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios, v_spl_reuniao_comissao, \
-    v_spl_conjunto_vereadores, v_spl_pauta_comissao, v_spl_vereador, v_spl_cargos_mesa
+from .models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios, v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao, v_spl_vereador, v_spl_cargos_mesa
 
 
 class SetorSerializer(serializers.ModelSerializer):
@@ -304,3 +303,55 @@ def spl_cargos_mesa(request):
     cargos_mesa = v_spl_cargos_mesa.objects.all().order_by('crg_ordem')
     serializer = CargosMesaSerializer(cargos_mesa, many=True)
     return Response(serializer.data)
+
+# ---------------------------------------------------------------------------------------------------
+# api que retorna o rec_id a partir da pac_id
+# ---------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def spl_get_rec_id(request, pac_id):
+    pauta_json = []
+    e_json = {}
+    try:
+        pauta = v_spl_pauta_comissao.objects.get(pac_id=pac_id)
+    except:
+        pauta = None
+    if pauta is not None:
+        e_json['rec_id'] = pauta.rec_id
+        pauta_json.append(e_json)        
+    return JsonResponse(pauta_json, safe=False)
+
+# ---------------------------------------------------------------------------------------------------
+# api que retorna os dados da reuniao atraves do rec_id
+# ---------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def spl_get_reuniao(request, rec_id):
+    reuniao_json = []
+    e_json = {}
+    try:
+        reuniao = v_spl_reuniao_comissao.objects.get(rec_id=rec_id)
+    except:
+        reuniao = None
+    if reuniao is not None:
+        e_json['rec_id'] = reuniao.rec_id
+        e_json['con_id'] = reuniao.con_id
+        e_json['rec_tipo_reuniao'] = reuniao.rec_tipo_reuniao
+        e_json['rec_numero'] = reuniao.rec_numero
+        reuniao_json.append(e_json)        
+    return JsonResponse(reuniao_json, safe=False)    
+
+# ---------------------------------------------------------------------------------------------------
+# api que retorna os dados da reuniao atraves do rec_id
+# ---------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def spl_get_comissao(request, con_id):
+    comissao_json = []
+    e_json = {}
+    try:
+        comissao = v_spl_conjunto_vereadores.objects.get(con_id=con_id)
+    except:
+        comissao = None
+    if comissao is not None:
+        e_json['con_id'] = comissao.con_id
+        e_json['ini_nome'] = comissao.ini_nome
+        comissao_json.append(e_json)        
+    return JsonResponse(comissao_json, safe=False)        
