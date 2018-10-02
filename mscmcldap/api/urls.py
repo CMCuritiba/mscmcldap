@@ -4,6 +4,8 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 
 from . import views
+from ..api.spl import views as spl_views
+
 
 urlpatterns = [
 	url(r'^setores/$', views.setores, name='api-setores'),
@@ -20,15 +22,15 @@ urlpatterns = [
 	url(r'^funcionarios_setor/(?P<set_id>[0-9]+)/$', views.funcionarios_setor, name='api-funcionarios-setor'),
 	url(r'^funcionario/(?P<pessoa>[0-9]+)/$', views.funcionario, name='api-funcionario'),
 	url(r'^funcionario_matricula/(?P<matricula>[0-9]+)/$', views.funcionario_matricula, name='api-funcionario-matricula'),
-	url(r'^spl/reuniao_comissao/$', views.spl_reuniao_comissao, name='api-spl-reuniao-comissao'),
-	url(r'^spl/projetos_reuniao/(?P<reuniao>[0-9]+)/$', views.spl_projetos_reuniao, name='api-spl-projetos-reuniao'),
-	url(r'^spl/projeto_reuniao/(?P<pac_id>[0-9]+)/(?P<par_id>[0-9]+)/$', views.spl_projeto_reuniao, name='api-spl-projeto-reuniao'),
-	url(r'^spl/reuniao_comissao_range/(?P<data_inicio>\d{8})/(?P<data_fim>\d{8})/$', views.spl_reuniao_comissao_range, name='api-spl-reuniao-comissao-range'),
-	url(r'^spl/vereadores/$', views.spl_vereadores, name='api-spl-vereadores'),
-	url(r'^spl/vereador_matricula/(?P<matricula>[0-9]+)/$', views.spl_vereador_matricula, name='api-spl-vereador-matricula'),
-	url(r'^spl/cargos_mesa/$', views.spl_cargos_mesa, name='api-spl-cargos_mesa'),
-	url(r'^spl/spl_get_rec_id/(?P<pac_id>[0-9]+)/$', views.spl_get_rec_id, name='api-spl-spl-get-rec-id'),
-	url(r'^spl/spl_get_reuniao/(?P<rec_id>[0-9]+)/$', views.spl_get_reuniao, name='api-spl-spl-get-reuniao'),
-	url(r'^spl/spl_get_comissao/(?P<con_id>[0-9]+)/$', views.spl_get_comissao, name='api-spl-spl-get-comissao'),
+	url(r'^spl/reuniao_comissao/$', spl_views.spl_reuniao_comissao, name='api-spl-reuniao-comissao'),
+	url(r'^spl/projetos_reuniao/(?P<reuniao>[0-9]+)/$', spl_views.spl_projetos_reuniao, name='api-spl-projetos-reuniao'),
+	url(r'^spl/projeto_reuniao/(?P<pac_id>[0-9]+)/(?P<par_id>[0-9]+)/$', spl_views.spl_projeto_reuniao, name='api-spl-projeto-reuniao'),
+	url(r'^spl/reuniao_comissao_range/(?P<data_inicio>\d{8})/(?P<data_fim>\d{8})/$', spl_views.spl_reuniao_comissao_range, name='api-spl-reuniao-comissao-range'),
+	url(r'^spl/vereadores/$', spl_views.spl_vereadores, name='api-spl-vereadores'),
+	url(r'^spl/vereador_matricula/(?P<matricula>[0-9]+)/$', spl_views.spl_vereador_matricula, name='api-spl-vereador-matricula'),
+	url(r'^spl/cargos_mesa/$', spl_views.spl_cargos_mesa, name='api-spl-cargos_mesa'),
+	url(r'^spl/spl_get_rec_id/(?P<pac_id>[0-9]+)/$', spl_views.spl_get_rec_id, name='api-spl-spl-get-rec-id'),
+	url(r'^spl/spl_get_reuniao/(?P<rec_id>[0-9]+)/$', spl_views.spl_get_reuniao, name='api-spl-spl-get-reuniao'),
+	url(r'^spl/spl_get_comissao/(?P<con_id>[0-9]+)/$', spl_views.spl_get_comissao, name='api-spl-spl-get-comissao'),
 	
 ]

@@ -2,7 +2,8 @@
 
 from django.test import TestCase, RequestFactory
 from unittest.mock import patch, MagicMock, Mock
-from ..models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios, v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao, v_spl_vereador, v_spl_cargos_mesa
+from ..models import v_setor, v_pessoa, v_centro_custo, v_item, v_cmcfuncionarios
+from ...api.spl.models import v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao, v_spl_vereador, v_spl_cargos_mesa
 from django.db import IntegrityError, DataError
 import os
 
