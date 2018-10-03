@@ -16,7 +16,6 @@ class VSetorTestCase(TestCase):
 		vsetor = v_setor.objects.get(pk=171)
 		self.assertEqual(vsetor.set_nome, 'Divisão de Desenvolvimento De Sistemas')
 
-
 class VPessoaTestCase(TestCase):
 	fixtures = ['inicial.json']
 

@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from django.test import TestCase, RequestFactory
+from unittest.mock import patch, MagicMock, Mock
 from rest_framework.test import APITestCase, APIRequestFactory, APIClient
-
+from django.db import IntegrityError, DataError
+import os
 
 class SetorAPITestCase(APITestCase):
 	fixtures = ['inicial.json']
@@ -145,4 +148,3 @@ class CargosMesaAPITestCase(APITestCase):
 	def test_retorna_cargos_mesa(self):
 		response = self.client.get('/api/spl/cargos_mesa/')
 		self.assertEqual(response.data[0]['matricula'], '1094')
-
