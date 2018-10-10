@@ -10,6 +10,70 @@ CREATE TYPE projeto_reuniao AS (
 	tem_emendas boolean
 );
 
+CREATE TYPE texto_conclusao AS (
+	pro_id integer,
+	pro_codigo character varying(23),
+	par_id integer,
+	txt_data date,
+	txt_finalizado boolean,
+	txt_relator boolean,
+	txt_id integer,
+	ver_id integer,
+	vereador character varying(100),
+	tcp_id integer,
+	tcp_nome character varying(40),
+	par_finalizado boolean,
+	con_id integer
+);
+
+CREATE OR REPLACE FUNCTION fn_remoto_texto_conclusao(pro_codigo character varying(23))
+  RETURNS SETOF texto_conclusao AS
+$$
+
+	SELECT t.pro_id,
+	    t.pro_codigo,
+	    t.par_id,
+	    t.txt_data,
+	    t.txt_finalizado,
+		t.txt_relator,
+		t.txt_id,
+		t.ver_id,
+		t.vereador,
+		t.tcp_id,
+		t.tcp_nome,
+		t.par_finalizado,
+		t.con_id
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pro_id, par_id, pro_codigo, par_id, txt_data, txt_finalizado, txt_relator, txt_id, ver_id, vereador, tcp_id, tcp_nome, par_finalizado, con_id from spl.texto_conclusao_autor where pro_codigo = '::text || $1) t(pro_id integer, pro_codigo character varying(23), par_id integer,	txt_data date, txt_finalizado boolean, txt_relator boolean,	txt_id integer,	ver_id integer,	vereador character varying(100), tcp_id integer, tcp_nome character varying(40), par_finalizado boolean, con_id integer)
+
+   $$
+   LANGUAGE 'sql' VOLATILE;     
+
+
+CREATE OR REPLACE FUNCTION fn_remoto_texto_conclusao(pro_codigo character varying(23))
+  RETURNS SETOF texto_conclusao AS
+$$
+
+	SELECT 
+	    t.pro_id,
+	    t.pro_codigo,
+	    t.par_id,
+	    t.txt_data,
+	    t.txt_finalizado,
+	    t.txt_relator,
+	    t.txt_id,
+	    t.ver_id,
+	    t.vereador,
+	    t.tcp_id,
+	    t.tcp_nome,
+	    t.par_finalizado,
+	    t.con_id
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pro_id, pro_codigo, par_id, txt_data, txt_finalizado, txt_relator, txt_id, ver_id, vereador, tcp_id, tcp_nome, par_finalizado, con_id from spl.texto_conclusao_autor where pro_codigo = '::text || $1) t(pro_id, pro_codigo, par_id, txt_data, txt_finalizado, txt_relator, txt_id, ver_id, vereador, tcp_id, tcp_nome, par_finalizado, con_id)
+   $$
+   LANGUAGE 'sql' VOLATILE;   
+
+
+
+
 CREATE OR REPLACE FUNCTION fn_remoto_projetos_reuniao(pac_id int)
   RETURNS SETOF projeto_reuniao AS
 $$
