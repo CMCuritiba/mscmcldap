@@ -210,3 +210,30 @@ def spl_get_comissao(request, con_id):
         comissao_json.append(e_json)
     return JsonResponse(comissao_json, safe=False)
 
+# ---------------------------------------------------------------------------------------------------
+# api que retorna o texto (e outras informações) do projeto
+# ---------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def spl_textos_conclusao(request, pro_codigo):
+    textos_json = []
+    c = connection.cursor()
+    c.callproc("fn_remoto_texto_conclusao", [pro_codigo, ])
+    textos = c.fetchall()
+    c.close()
+    for t in textos:
+        e_json = {}
+        e_json['pro_id'] = t[0]
+        e_json['pro_codigo'] = t[1]
+        e_json['par_id'] = t[2]
+        e_json['txt_data'] = t[3].strftime("%d/%m/%Y")
+        e_json['txt_finalizado'] = t[4]
+        e_json['txt_relator'] = t[5]
+        e_json['txt_id'] = t[6]
+        e_json['ver_id'] = t[7]
+        e_json['vereador'] = t[8]
+        e_json['tcp_id'] = t[9]
+        e_json['tcp_nome'] = t[10]
+        e_json['par_finalizado'] = t[11]
+        e_json['con_id'] = t[12]
+        textos_json.append(e_json)
+    return JsonResponse(textos_json, safe=False)

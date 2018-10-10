@@ -31,5 +31,5 @@ urlpatterns = [
 	url(r'^spl/spl_get_rec_id/(?P<pac_id>[0-9]+)/$', spl_views.spl_get_rec_id, name='api-spl-spl-get-rec-id'),
 	url(r'^spl/spl_get_reuniao/(?P<rec_id>[0-9]+)/$', spl_views.spl_get_reuniao, name='api-spl-spl-get-reuniao'),
 	url(r'^spl/spl_get_comissao/(?P<con_id>[0-9]+)/$', spl_views.spl_get_comissao, name='api-spl-spl-get-comissao'),
-	
+	url(r'^spl/textos_conclusao/(?P<pro_codigo>\d{3}[.]\d{5}[.]\d{4})/$', spl_views.spl_textos_conclusao, name='api-spl-textos-conclusao'),	
 ]

@@ -246,3 +246,4 @@ class v_spl_cargos_mesa(models.Model):
 
     def __str__(self):
         return self.ini_nome
+
