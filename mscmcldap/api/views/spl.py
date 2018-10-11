@@ -32,7 +32,7 @@ class CargosMesaSerializer(serializers.ModelSerializer):
 def spl_reuniao_comissao(request):
     reunioes_json = []
     hoje = datetime.datetime.now()
-    # hoje = datetime.date(2018,9,5)
+    #hoje = datetime.date(2018,10,2)
 
     reunioes = v_spl_reuniao_comissao.objects.filter(rec_data=hoje)
     for c in reunioes:
