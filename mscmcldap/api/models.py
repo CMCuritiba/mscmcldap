@@ -186,10 +186,10 @@ class v_spl_pauta_comissao(models.Model):
 	versao = models.IntegerField()
 
 	def __unicode__(self):
-		return self.pac_id
+		return str(self.pac_id)
 
 	def __str__(self):
-		return self.pac_id
+		return str(self.pac_id)
 
 
 # ---------------------------------------------------------------------------------------------
