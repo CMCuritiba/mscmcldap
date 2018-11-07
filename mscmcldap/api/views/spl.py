@@ -33,23 +33,27 @@ def spl_reuniao_comissao(request):
     reunioes_json = []
     hoje = datetime.datetime.now()
     #hoje = datetime.date(2018,10,2)
+    request.session.flush()
 
     reunioes = v_spl_reuniao_comissao.objects.filter(rec_data=hoje)
     for c in reunioes:
-        pauta = v_spl_pauta_comissao.objects.get(rec_id=c.rec_id)
-        if pauta.pac_liberada:
-            conjunto = v_spl_conjunto_vereadores.objects.get(con_id=c.con_id)
-            e_json = {}
-            e_json['rec_id'] = c.rec_id
-            e_json['con_id'] = c.con_id
-            e_json['con_desc'] = conjunto.ini_nome
-            e_json['con_sigla'] = conjunto.con_sigla
-            e_json['rec_tipo_reuniao'] = c.rec_tipo_reuniao
-            e_json['rec_numero'] = c.rec_numero
-            e_json['versao'] = c.versao
-            e_json['rec_data'] = c.rec_data.strftime("%d/%m/%Y")
-            e_json['pac_id'] = pauta.pac_id
-            reunioes_json.append(e_json)
+        try:
+            pauta = v_spl_pauta_comissao.objects.get(rec_id=c.rec_id)
+            if pauta.pac_liberada:
+                conjunto = v_spl_conjunto_vereadores.objects.get(con_id=c.con_id)
+                e_json = {}
+                e_json['rec_id'] = c.rec_id
+                e_json['con_id'] = c.con_id
+                e_json['con_desc'] = conjunto.ini_nome
+                e_json['con_sigla'] = conjunto.con_sigla
+                e_json['rec_tipo_reuniao'] = c.rec_tipo_reuniao
+                e_json['rec_numero'] = c.rec_numero
+                e_json['versao'] = c.versao
+                e_json['rec_data'] = c.rec_data.strftime("%d/%m/%Y")
+                e_json['pac_id'] = pauta.pac_id
+                reunioes_json.append(e_json)
+        except v_spl_pauta_comissao.DoesNotExist:
+            pass
 
     return JsonResponse(reunioes_json, safe=False)
 
