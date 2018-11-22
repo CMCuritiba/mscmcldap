@@ -244,3 +244,27 @@ def spl_textos_conclusao(request, pro_codigo):
         e_json['con_id'] = t[12]
         textos_json.append(e_json)
     return JsonResponse(textos_json, safe=False)
+
+# ---------------------------------------------------------------------------------------------------
+# api que retorna os dados especificos do projeto
+# ---------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def spl_projeto(request, pac_id, par_id, codigo_proposicao):
+    projetos_json = []
+    c = connection.cursor()
+    c.callproc("fn_remoto_projeto", [pac_id, par_id, codigo_proposicao])
+    projetos = c.fetchall()
+    c.close()
+    for p in projetos:
+        e_json = {}
+        e_json['pac_id'] = p[0]
+        e_json['par_id'] = p[1]
+        e_json['codigo_proposicao'] = p[2]
+        e_json['iniciativa'] = p[3]
+        e_json['sumula'] = p[4]
+        e_json['relator'] = p[5]
+        e_json['conclusao_relator'] = p[6]
+        e_json['conclusao_comissao'] = p[7]
+        e_json['tem_emendas'] = p[8]
+        projetos_json.append(e_json)
+    return JsonResponse(projetos_json, safe=False)    
