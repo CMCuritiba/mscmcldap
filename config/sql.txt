@@ -124,7 +124,7 @@ $BODY$
 	    t.conclusao_relator,
 	    t.conclusao_comissao,
 	    t.tem_emendas
-   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pac_id, par_id, codigo_proposicao, iniciativa, sumula, relator, conclusao_relator, conclusao_comissao, tem_emendas from spl.proposicoes_pauta_reuniao where pac_id = '::text || $1  || ' and par_id ='::text || $2 || ' and codigo_proposicao = '::text || $3) t(pac_id integer, par_id integer, codigo_proposicao character varying, iniciativa text, sumula character varying, relator character varying(100), conclusao_relator character varying(40), conclusao_comissao character varying(40), tem_emendas boolean)
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pac_id, par_id, codigo_proposicao, iniciativa, sumula, relator, conclusao_relator, conclusao_comissao, tem_emendas from spl.proposicoes_pauta_reuniao where pac_id = '::text || $1  || ' and par_id ='::text || $2 || ' and codigo_proposicao = '::text || '''' || $3 || '''') t(pac_id integer, par_id integer, codigo_proposicao character varying, iniciativa text, sumula character varying, relator character varying(100), conclusao_relator character varying(40), conclusao_comissao character varying(40), tem_emendas boolean)
 
 $BODY$
   LANGUAGE sql VOLATILE  
