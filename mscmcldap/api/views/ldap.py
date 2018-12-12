@@ -21,7 +21,7 @@ def ldap_usuarios(request):
     c = Connection(s)
     c.bind()
     c.search(
-        search_base = 'dc=pr,dc=gov,dc=br',
+        search_base = 'ou=Usuarios,dc=pr,dc=gov,dc=br',
         search_filter = '(employeeNumber=*)',
         attributes = ['cn', 'givenName', 'uid', 'employeeNumber', 'mail']
     )
