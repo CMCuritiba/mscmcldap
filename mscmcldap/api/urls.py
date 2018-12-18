@@ -5,6 +5,7 @@ from django.conf.urls import url
 from ..api.views import elotech as elotech_views
 from ..api.views import spl as spl_views
 from ..api.views import ldap as ldap_views
+from ..api.views import misc as misc_views
 
 urlpatterns = [
 	url(r'^setores/$', elotech_views.setores, name='api-setores'),
@@ -36,4 +37,6 @@ urlpatterns = [
 	url(r'^spl/projeto/(?P<pac_id>[0-9]+)/(?P<par_id>[0-9]+)/(?P<codigo_proposicao>\d{3}[.]\d{5}[.]\d{4})/$', spl_views.spl_projeto, name='api-spl-projeto'),
 
 	url(r'^ldap/usuarios/$', ldap_views.ldap_usuarios, name='api-ldap-usuarios'),
+
+	url(r'^misc/connection/$', misc_views.connection, name='api-misc-connection'),
 ]
