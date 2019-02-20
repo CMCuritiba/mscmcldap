@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
     print('Iniciando comandos SQL para mockar views')
 
     operations = [
+        
         migrations.RunSQL(
             """
             DROP TABLE IF EXISTS v_setor;
