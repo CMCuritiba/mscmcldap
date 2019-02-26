@@ -162,3 +162,27 @@ def funcionario_matricula(request, matricula):
     except funcionario.DoesNotExist:
         raise Http404
 
+
+def recursive_setores_subordinados(array, set_id, full):
+    setores = v_setor.objects.filter(set_ativo=True).filter(set_id_superior=set_id)
+    if setores:
+        for setor in setores:
+            setor_json = {}
+            fields = ('set_id', 'set_nome', 'set_sigla', 'set_id_superior', 'set_ativo', 'set_tipo')
+            setor_json['set_id'] = setor.set_id
+            setor_json['set_nome'] = setor.set_nome
+            setor_json['set_sigla'] = setor.set_sigla
+            setor_json['set_id_superior'] = setor.set_id_superior
+            setor_json['set_ativo'] = setor.set_ativo
+            setor_json['set_tipo'] = setor.set_tipo
+            array.append(setor_json)
+            if full == '1':
+                recursive_setores_subordinados(array, setor.set_id, full)
+
+@api_view(['GET'])
+def setores_subordinados(request, set_id, full):
+    array_setores = []
+
+    recursive_setores_subordinados(array_setores, set_id, full)
+
+    return JsonResponse(array_setores, safe=False)    
