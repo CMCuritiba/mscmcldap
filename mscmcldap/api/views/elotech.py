@@ -185,4 +185,4 @@ def setores_subordinados(request, set_id, full):
 
     recursive_setores_subordinados(array_setores, set_id, full)
 
-    return JsonResponse(array_setores, safe=False)    
+    return JsonResponse(array_setores, safe=False)
