@@ -26,6 +26,15 @@ CREATE TYPE texto_conclusao AS (
 	con_id integer
 );
 
+CREATE TYPE funcionario AS (
+	pessoa integer,
+	matricula integer,
+	pes_nome character varying,
+	funcao integer,
+	set_id character varying,
+	ind_estagiario integer
+);
+
 CREATE OR REPLACE FUNCTION fn_remoto_texto_conclusao(pro_codigo character varying(23))
   RETURNS SETOF texto_conclusao AS
 $$
@@ -128,3 +137,20 @@ $BODY$
 
 $BODY$
   LANGUAGE sql VOLATILE  
+
+
+CREATE OR REPLACE FUNCTION fn_remoto_funcionarios(set_id character varying)
+  RETURNS SETOF funcionario AS
+$BODY$
+
+	SELECT 	t.pessoa,
+		t.matricula,
+		t.pes_nome,
+		t.funcao,
+		t.set_id,
+		t.ind_estagiario
+
+	FROM 
+		dblink('hostaddr=10.0.0.67 dbname=elotech user=mscmcldap password=321camara'::text, 'SELECT pessoa, matricula, pes_nome, funcao, set_id, ind_estagiario FROM aise.v_cmcfuncionarios where set_id = '::text || '''' || $1 || '''') t(pessoa integer, matricula integer, pes_nome character varying, funcao integer, set_id character varying, ind_estagiario integer);
+$BODY$
+  LANGUAGE sql VOLATILE  		

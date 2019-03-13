@@ -179,6 +179,7 @@ def recursive_setores_subordinados(array, set_id, full):
             if full == '1':
                 recursive_setores_subordinados(array, setor.set_id, full)
 
+
 @api_view(['GET'])
 def setores_subordinados(request, set_id, full):
     array_setores = []
@@ -186,3 +187,23 @@ def setores_subordinados(request, set_id, full):
     recursive_setores_subordinados(array_setores, set_id, full)
 
     return JsonResponse(array_setores, safe=False)
+
+
+@api_view(['GET'])
+def funcionarios_setor_func(request, set_id):
+    func_json = []
+
+    c = connection.cursor()
+    c.callproc("fn_remoto_funcionarios", [set_id, ])
+    funcionarios = c.fetchall()
+    c.close()    
+    for f in funcionarios:
+        e_json = {}
+        e_json['pessoa'] = f[0]
+        e_json['matricula'] = f[1]
+        e_json['pes_nome'] = f[2]
+        e_json['funcao'] = f[3]
+        e_json['set_id'] = f[4]
+        e_json['ind_estagiario'] = f[5]
+        func_json.append(e_json)
+    return JsonResponse(func_json, safe=False)
