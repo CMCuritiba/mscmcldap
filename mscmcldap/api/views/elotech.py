@@ -43,7 +43,7 @@ class ItemSerializer(serializers.ModelSerializer):
 class FuncionarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = v_cmcfuncionarios
-        fields = ('matricula', 'pessoa', 'pes_nome', 'funcao', 'set_id', 'ind_estagiario')
+        fields = ('matricula', 'pessoa', 'pes_nome', 'funcao', 'set_id', 'ind_estagiario', 'cpf')
 
 
 @api_view(['GET'])
