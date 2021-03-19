@@ -48,7 +48,7 @@ pytz==2016.10
 #django-bower==5.2.0
 
 # Django Rest
-djangorestframework==3.6.3
+djangorestframework==3.11.2
 
 #Unipath
 Unipath>=1.1
