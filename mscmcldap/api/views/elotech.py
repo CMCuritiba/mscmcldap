@@ -43,7 +43,7 @@ class ItemSerializer(serializers.ModelSerializer):
 class FuncionarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = v_cmcfuncionarios
-        fields = ('matricula', 'pessoa', 'pes_nome', 'funcao', 'set_id', 'ind_estagiario')
+        fields = ('matricula', 'pessoa', 'pes_nome', 'funcao', 'set_id', 'ind_estagiario', 'cpf')
 
 
 @api_view(['GET'])
@@ -161,6 +161,15 @@ def funcionario_matricula(request, matricula):
         return Response(serializer.data)
     except funcionario.DoesNotExist:
         raise Http404
+
+@api_view(['GET'])
+def funcionario_cpf(request, cpf):
+    try:
+        funcionario = v_cmcfuncionarios.objects.get(cpf=cpf)
+        serializer = FuncionarioSerializer(funcionario, many=False)
+        return Response(serializer.data)
+    except funcionario.DoesNotExist:
+        raise Http404    
 
 
 def recursive_setores_subordinados(array, set_id, full):
