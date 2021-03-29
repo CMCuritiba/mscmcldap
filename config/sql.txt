@@ -1,3 +1,5 @@
+create extension dblink;
+
 CREATE TYPE projeto_reuniao AS (
 	pac_id integer,
 	par_id integer,
@@ -79,7 +81,7 @@ $BODY$
    FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pro_id, pro_codigo, par_id, txt_data, txt_finalizado, txt_relator, txt_id, ver_id, vereador, tcp_id, tcp_nome, par_finalizado, con_id from spl.texto_conclusao_autor WHERE txt_relator IS NOT TRUE AND pro_codigo = '::text || '''' || $1 || '''') t(pro_id integer, pro_codigo character varying(23), par_id integer,	txt_data date, txt_finalizado boolean, txt_relator boolean,	txt_id integer,	ver_id integer,	vereador character varying(100), tcp_id integer, tcp_nome character varying(40), par_finalizado boolean, con_id integer)
 
    $BODY$
-  LANGUAGE sql VOLATILE
+  LANGUAGE sql VOLATILE;
 
 
 CREATE OR REPLACE FUNCTION fn_remoto_projetos_reuniao(pac_id int)
@@ -117,7 +119,7 @@ $BODY$
    FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pac_id, par_id, codigo_proposicao, iniciativa, sumula, relator, conclusao_relator, conclusao_comissao, tem_emendas from spl.proposicoes_pauta_reuniao where pac_id = '::text || $1  || ' and par_id ='::text || $2) t(pac_id integer, par_id integer, codigo_proposicao character varying, iniciativa text, sumula character varying, relator character varying(100), conclusao_relator character varying(40), conclusao_comissao character varying(40), tem_emendas boolean)
 
 $BODY$
-  LANGUAGE sql VOLATILE
+  LANGUAGE sql VOLATILE;
   
 
 CREATE OR REPLACE FUNCTION fn_remoto_projeto(pac_id integer, par_id integer, codigo_proposicao character varying)
@@ -136,7 +138,7 @@ $BODY$
    FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pac_id, par_id, codigo_proposicao, iniciativa, sumula, relator, conclusao_relator, conclusao_comissao, tem_emendas from spl.proposicoes_pauta_reuniao where pac_id = '::text || $1  || ' and par_id ='::text || $2 || ' and codigo_proposicao = '::text || '''' || $3 || '''') t(pac_id integer, par_id integer, codigo_proposicao character varying, iniciativa text, sumula character varying, relator character varying(100), conclusao_relator character varying(40), conclusao_comissao character varying(40), tem_emendas boolean)
 
 $BODY$
-  LANGUAGE sql VOLATILE  
+  LANGUAGE sql VOLATILE;
 
 
 CREATE OR REPLACE FUNCTION fn_remoto_funcionarios(set_id character varying)
@@ -153,4 +155,142 @@ $BODY$
 	FROM 
 		dblink('hostaddr=10.0.0.67 dbname=elotech user=mscmcldap password=321camara'::text, 'SELECT pessoa, matricula, pes_nome, funcao, set_id, ind_estagiario FROM aise.v_cmcfuncionarios where set_id = '::text || '''' || $1 || '''') t(pessoa integer, matricula integer, pes_nome character varying, funcao integer, set_id character varying, ind_estagiario integer);
 $BODY$
-  LANGUAGE sql VOLATILE  		
+  LANGUAGE sql VOLATILE;
+
+CREATE OR REPLACE VIEW v_setor AS
+	  SELECT (t.a_set_codigo)::integer AS set_id,
+    t.a_set_nome AS set_nome,
+    t.a_set_sigla AS set_sigla,
+    t.a_set_inativacao AS set_inativacao,
+    (t.a_set_codigo_superior)::integer AS set_id_superior,
+        CASE
+            WHEN (t.set_ativo = 0) THEN false
+            WHEN (t.set_ativo = 1) THEN true
+            ELSE NULL::boolean
+        END AS set_ativo,
+        CASE
+            WHEN (((t.a_set_nome)::text ~~ 'Gab%'::text) OR ((t.a_set_nome)::text ~~ 'Bloco%'::text)) THEN 'G'::text
+            WHEN ((t.a_set_codigo)::integer = ANY (ARRAY[146, 153])) THEN 'F'::text
+            ELSE 'N'::text
+        END AS set_tipo
+   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=spa password=123camara'::text, 'select a_set_codigo,a_set_nome,a_set_sigla,a_set_inativacao,a_set_codigo_superior,set_ativo from aise.v_setor'::text) t(a_set_codigo character varying, a_set_nome character varying, a_set_sigla character varying, a_set_inativacao date, a_set_codigo_superior character varying, set_ativo integer);
+
+CREATE OR REPLACE VIEW v_centro_custo AS
+ SELECT t.centrocusto,
+    t.local,
+    t.descricao,
+    t.ativoinativoai,
+    t.codigoresponsavel
+   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=almoxarifado password=hoodoogurus'::text, 'select centrocusto, local, descricao, ativoinativoai, codigoresponsavel from siscop.est_centrocusto where entidade = 1 and orgao = ''01'' and unidade = ''001'''::text) t(centrocusto integer, local character varying, descricao character varying, ativoinativoai character varying, codigoresponsavel integer);
+
+
+CREATE OR REPLACE VIEW v_pessoa AS
+ SELECT t.pes_matricula,
+    t.pes_nome,
+    t.set_id
+   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=ramais password=123camara'::text, 'select matricula, pes_nome, set_id from aise.ramais_pessoa'::text) t(pes_matricula integer, pes_nome character varying, set_id integer);	 
+
+CREATE OR REPLACE VIEW v_item AS
+ SELECT t.item,
+    t.unidade,
+    t.classificacao,
+    t.desc_classificacao,
+    t.desc_item,
+    t.estocavel,
+    t.ativoinativoai,
+    t.valor,
+    t.ativo_classificacao,
+    t.itememanalisesn
+   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=almoxarifado password=hoodoogurus'::text, 'select a.item, a.unidade, b.classificacao, b.descricao as desc_classificacao, a.descricao as desc_item, a.estocavel, a.ativoinativoai, a.valor, b.ativo as ativo_classificacao, a.itememanalisesn from siscop.est_item a, siscop.est_classificacao b where a.classificacao = b.classificacao'::text) t(item integer, unidade character varying, classificacao character varying, desc_classificacao character varying, desc_item character varying, estocavel character varying, ativoinativoai character varying, valor character varying, ativo_classificacao character varying, itememanalisesn character varying);	 
+
+CREATE OR REPLACE VIEW v_cmcfuncionarios AS
+ SELECT t.matricula,
+    t.pessoa,
+    t.pes_nome,
+    t.funcao,
+    t.set_id,
+    t.ind_estagiario,
+    t.cpf
+   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=mscmcldap password=321camara'::text, 'SELECT pessoa, matricula, pes_nome, funcao, set_id, ind_estagiario, cpf FROM aise.v_cmcfuncionarios'::text) t(pessoa integer, matricula integer, pes_nome character varying, funcao integer, set_id integer, ind_estagiario integer, cpf character varying);	 
+
+CREATE OR REPLACE VIEW v_spl_reuniao_comissao AS
+ SELECT t.rec_id,
+    t.con_id,
+    t.rec_tipo_reuniao,
+    t.rec_numero,
+    t.versao,
+    t.rec_data
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select rec_id, con_id, rec_tipo_reuniao, rec_numero, versao, rec_data from spl.reuniao_comissao'::text) t(rec_id integer, con_id integer, rec_tipo_reuniao character varying, rec_numero character varying, versao integer, rec_data date);	 
+
+CREATE OR REPLACE VIEW v_spl_conjunto_vereadores AS
+ SELECT t.con_id,
+    t.con_sigla,
+    t.con_maximo,
+    t.ut_id,
+    t.ini_nome,
+    t.ini_ativa,
+    t.tin_id,
+    t.versao,
+    t.ini_codigo_prefeitura,
+    t.con_descricao,
+    t.con_site_ordem,
+    t.con_email
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select con_id, con_sigla, con_maximo, ut_id, ini_nome, ini_ativa, tin_id, versao, ini_codigo_prefeitura, con_descricao, con_site_ordem, con_email from spl.conjunto_vereadores'::text) t(con_id integer, con_sigla character varying, con_maximo integer, ut_id integer, ini_nome text, ini_ativa boolean, tin_id integer, versao integer, ini_codigo_prefeitura integer, con_descricao text, con_site_ordem integer, con_email character varying);	 
+
+CREATE OR REPLACE VIEW v_spl_pauta_comissao AS
+ SELECT t.pac_id,
+    t.rec_id,
+    t.pac_liberada,
+    t.pac_notificada,
+    t.versao
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select pac_id, rec_id, pac_liberada, pac_notificada, versao from spl.pauta_comissao'::text) t(pac_id integer, rec_id integer, pac_liberada boolean, pac_notificada boolean, versao integer);	 
+
+CREATE OR REPLACE VIEW v_spl_vereador AS
+ SELECT v.matricula,
+    v.ver_id,
+    v.ver_sexo,
+    v.ut_id,
+    v.ini_nome,
+    v.ini_ativa,
+    v.ver_nome_completo,
+    v.ini_codigo_prefeitura,
+    v.ver_site,
+    v.ver_biografia,
+    v.ver_redes_sociais,
+    v.ver_fone_principal,
+    v.ver_fones,
+    v.ver_legislaturas,
+    v.ver_localizacao,
+    v.ver_partido,
+    v.arq_id,
+    v.arq_id_biografia
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'SELECT u.usu_matricula, v.ver_id, v.ver_sexo, v.ut_id, v.ini_nome, v.ini_ativa, v.ver_nome_completo, 
+       v.ini_codigo_prefeitura, v.ver_site, v.ver_biografia, v.ver_redes_sociais, 
+       v.ver_fone_principal, v.ver_fones, v.ver_legislaturas, v.ver_localizacao, 
+       v.ver_partido, v.arq_id, v.arq_id_biografia
+  FROM spl.vereador v
+  INNER JOIN spl.usuario u using(ver_id)
+  WHERE v.ini_ativa'::text) v(matricula character varying(4), ver_id integer, ver_sexo character(1), ut_id integer, ini_nome character varying(100), ini_ativa boolean, ver_nome_completo character varying(100), ini_codigo_prefeitura integer, ver_site character varying(250), ver_biografia text, ver_redes_sociais character varying(250), ver_fone_principal character varying(20), ver_fones character varying(100), ver_legislaturas character varying(100), ver_localizacao character varying(50), ver_partido character varying(100), arq_id integer, arq_id_biografia integer);	 
+
+CREATE OR REPLACE VIEW v_spl_cargos_mesa AS
+	 SELECT t.matricula,
+    t.ini_nome,
+    t.crg_nome,
+    t.crg_ordem
+   FROM dblink('hostaddr=10.0.0.11 dbname=pro user=mscmc password=camara'::text, 'select distinct u.usu_matricula, v.ini_nome, cv.crg_nome, cv.crg_ordem
+from spl.composicao c
+	inner join spl.cargo_vereador cv ON
+		c.crg_id = cv.crg_id
+	inner join spl.vereador v ON
+		c.ver_id = v.ver_id
+	inner join spl.usuario u ON
+		v.ver_id = u.ver_id
+where con_id in (select con_id 
+		from spl.conjunto_vereadores 
+		where ini_ativa=true 
+			and tin_id in (select tin_id 
+					from spl.tipo_iniciativa 
+					where tin_nome ilike ''mesa%'' 
+                                      )
+		)
+order by cv.crg_ordem'::text) t(matricula integer, ini_nome text, crg_nome character varying(50), crg_ordem integer);

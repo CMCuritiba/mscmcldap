@@ -23,6 +23,7 @@ urlpatterns = [
 	url(r'^funcionarios_setor_func/(?P<set_id>[0-9]+)/$', elotech_views.funcionarios_setor_func, name='api-funcionarios-setor-func'),
 	url(r'^funcionario/(?P<pessoa>[0-9]+)/$', elotech_views.funcionario, name='api-funcionario'),
 	url(r'^funcionario_matricula/(?P<matricula>[0-9]+)/$', elotech_views.funcionario_matricula, name='api-funcionario-matricula'),
+	url(r'^funcionario_cpf/(?P<cpf>[0-9]+)/$', elotech_views.funcionario_cpf, name='api-funcionario-cpf'),
 	url(r'^setores_subordinados/(?P<set_id>[0-9]+)/(?P<full>[0-1]+)/$', elotech_views.setores_subordinados, name='api-setores-subordinados'),
 
 	url(r'^spl/reuniao_comissao/$', spl_views.spl_reuniao_comissao, name='api-spl-reuniao-comissao'),

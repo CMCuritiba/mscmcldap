@@ -50,7 +50,6 @@ INSTALLED_APPS += ['gunicorn', ]
 
 STATIC_ROOT = '/var/www/html/mscmcldap/static'
 
-
 # STORAGE CONFIGURATION
 # ------------------------------------------------------------------------------
 # Uploaded Media Files

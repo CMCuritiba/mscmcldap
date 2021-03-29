@@ -162,6 +162,15 @@ def funcionario_matricula(request, matricula):
     except funcionario.DoesNotExist:
         raise Http404
 
+@api_view(['GET'])
+def funcionario_cpf(request, cpf):
+    try:
+        funcionario = v_cmcfuncionarios.objects.get(cpf=cpf)
+        serializer = FuncionarioSerializer(funcionario, many=False)
+        return Response(serializer.data)
+    except funcionario.DoesNotExist:
+        raise Http404    
+
 
 def recursive_setores_subordinados(array, set_id, full):
     setores = v_setor.objects.filter(set_ativo=True).filter(set_id_superior=set_id)
