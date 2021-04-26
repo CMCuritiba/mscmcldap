@@ -153,7 +153,7 @@ $BODY$
 		t.ind_estagiario
 
 	FROM 
-		dblink('hostaddr=10.0.0.67 dbname=elotech user=mscmcldap password=321camara'::text, 'SELECT pessoa, matricula, pes_nome, funcao, set_id, ind_estagiario FROM aise.v_cmcfuncionarios where set_id = '::text || '''' || $1 || '''') t(pessoa integer, matricula integer, pes_nome character varying, funcao integer, set_id character varying, ind_estagiario integer);
+		dblink('hostaddr=192.168.153.46 dbname=elotech user=mscmcldap password=321camara'::text, 'SELECT pessoa, matricula, pes_nome, funcao, set_id, ind_estagiario FROM aise.v_cmcfuncionarios where set_id = '::text || '''' || $1 || '''') t(pessoa integer, matricula integer, pes_nome character varying, funcao integer, set_id character varying, ind_estagiario integer);
 $BODY$
   LANGUAGE sql VOLATILE;
 
@@ -173,7 +173,7 @@ CREATE OR REPLACE VIEW v_setor AS
             WHEN ((t.a_set_codigo)::integer = ANY (ARRAY[146, 153])) THEN 'F'::text
             ELSE 'N'::text
         END AS set_tipo
-   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=spa password=123camara'::text, 'select a_set_codigo,a_set_nome,a_set_sigla,a_set_inativacao,a_set_codigo_superior,set_ativo from aise.v_setor'::text) t(a_set_codigo character varying, a_set_nome character varying, a_set_sigla character varying, a_set_inativacao date, a_set_codigo_superior character varying, set_ativo integer);
+   FROM dblink('hostaddr=192.168.153.46 dbname=elotech user=spa password=123camara'::text, 'select a_set_codigo,a_set_nome,a_set_sigla,a_set_inativacao,a_set_codigo_superior,set_ativo from aise.v_setor'::text) t(a_set_codigo character varying, a_set_nome character varying, a_set_sigla character varying, a_set_inativacao date, a_set_codigo_superior character varying, set_ativo integer);
 
 CREATE OR REPLACE VIEW v_centro_custo AS
  SELECT t.centrocusto,
@@ -181,14 +181,14 @@ CREATE OR REPLACE VIEW v_centro_custo AS
     t.descricao,
     t.ativoinativoai,
     t.codigoresponsavel
-   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=almoxarifado password=hoodoogurus'::text, 'select centrocusto, local, descricao, ativoinativoai, codigoresponsavel from siscop.est_centrocusto where entidade = 1 and orgao = ''01'' and unidade = ''001'''::text) t(centrocusto integer, local character varying, descricao character varying, ativoinativoai character varying, codigoresponsavel integer);
+   FROM dblink('hostaddr=192.168.153.46 dbname=elotech user=almoxarifado password=hoodoogurus'::text, 'select centrocusto, local, descricao, ativoinativoai, codigoresponsavel from siscop.est_centrocusto where entidade = 1 and orgao = ''01'' and unidade = ''001'''::text) t(centrocusto integer, local character varying, descricao character varying, ativoinativoai character varying, codigoresponsavel integer);
 
 
 CREATE OR REPLACE VIEW v_pessoa AS
  SELECT t.pes_matricula,
     t.pes_nome,
     t.set_id
-   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=ramais password=123camara'::text, 'select matricula, pes_nome, set_id from aise.ramais_pessoa'::text) t(pes_matricula integer, pes_nome character varying, set_id integer);	 
+   FROM dblink('hostaddr=192.168.153.46 dbname=elotech user=ramais password=123camara'::text, 'select matricula, pes_nome, set_id from aise.ramais_pessoa'::text) t(pes_matricula integer, pes_nome character varying, set_id integer);	 
 
 CREATE OR REPLACE VIEW v_item AS
  SELECT t.item,
@@ -201,7 +201,7 @@ CREATE OR REPLACE VIEW v_item AS
     t.valor,
     t.ativo_classificacao,
     t.itememanalisesn
-   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=almoxarifado password=hoodoogurus'::text, 'select a.item, a.unidade, b.classificacao, b.descricao as desc_classificacao, a.descricao as desc_item, a.estocavel, a.ativoinativoai, a.valor, b.ativo as ativo_classificacao, a.itememanalisesn from siscop.est_item a, siscop.est_classificacao b where a.classificacao = b.classificacao'::text) t(item integer, unidade character varying, classificacao character varying, desc_classificacao character varying, desc_item character varying, estocavel character varying, ativoinativoai character varying, valor character varying, ativo_classificacao character varying, itememanalisesn character varying);	 
+   FROM dblink('hostaddr=192.168.153.46 dbname=elotech user=almoxarifado password=hoodoogurus'::text, 'select a.item, a.unidade, b.classificacao, b.descricao as desc_classificacao, a.descricao as desc_item, a.estocavel, a.ativoinativoai, a.valor, b.ativo as ativo_classificacao, a.itememanalisesn from siscop.est_item a, siscop.est_classificacao b where a.classificacao = b.classificacao'::text) t(item integer, unidade character varying, classificacao character varying, desc_classificacao character varying, desc_item character varying, estocavel character varying, ativoinativoai character varying, valor character varying, ativo_classificacao character varying, itememanalisesn character varying);	 
 
 CREATE OR REPLACE VIEW v_cmcfuncionarios AS
  SELECT t.matricula,
@@ -211,7 +211,7 @@ CREATE OR REPLACE VIEW v_cmcfuncionarios AS
     t.set_id,
     t.ind_estagiario,
     t.cpf
-   FROM dblink('hostaddr=10.0.0.67 dbname=elotech user=mscmcldap password=321camara'::text, 'SELECT pessoa, matricula, pes_nome, funcao, set_id, ind_estagiario, cpf FROM aise.v_cmcfuncionarios'::text) t(pessoa integer, matricula integer, pes_nome character varying, funcao integer, set_id integer, ind_estagiario integer, cpf character varying);	 
+   FROM dblink('hostaddr=192.168.153.46 dbname=elotech user=mscmcldap password=321camara'::text, 'SELECT pessoa, matricula, pes_nome, funcao, set_id, ind_estagiario, cpf FROM aise.v_cmcfuncionarios'::text) t(pessoa integer, matricula integer, pes_nome character varying, funcao integer, set_id integer, ind_estagiario integer, cpf character varying);	 
 
 CREATE OR REPLACE VIEW v_spl_reuniao_comissao AS
  SELECT t.rec_id,
