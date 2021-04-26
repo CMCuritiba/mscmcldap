@@ -109,6 +109,7 @@ class v_cmcfuncionarios(models.Model):
 	funcao = models.IntegerField(blank=True, null=True)
 	set_id = models.IntegerField()
 	ind_estagiario = models.IntegerField()
+	cpf = models.CharField(max_length=11)
 
 	def __unicode__(self):
 		return self.pes_nome
