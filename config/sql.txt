@@ -212,7 +212,7 @@ CREATE OR REPLACE VIEW public.v_spl_reuniao_comissao AS
     t.rec_numero,
     t.versao,
     t.rec_data
-   FROM dblink('host=prod-postgresql-spl.cac3p2a0zcak.sa-east-1.rds.amazonaws.com dbname=pro user=mscmc password=camara'::text, 'select rec_id, con_id, rec_tipo_reuniao, rec_numero, versao, rec_data from spl.reuniao_comissao'::text) t(rec_id integer, con_id integer, rec_tipo_reuniao character varying, rec_numero character varying, versao integer, rec_data date);
+   FROM dblink('host=prod-postgresql-spl.cac3p2a0zcak.sa-east-1.rds.amazonaws.com dbname=pro user=mscmc password=camara'::text, 'select rec_id, con_id, rec_tipo_reuniao, rec_numero, r.versao, rec_data from spl.reuniao_comissao r join spl.reuniao_comissao_conjunto using (rec_id)'::text) t(rec_id integer, con_id integer, rec_tipo_reuniao character varying, rec_numero character varying, versao integer, rec_data date);
 
 ALTER TABLE public.v_spl_reuniao_comissao
     OWNER TO mscmc;
