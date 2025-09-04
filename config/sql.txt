@@ -150,22 +150,36 @@ $BODY$
   LANGUAGE sql VOLATILE;
 
 CREATE OR REPLACE VIEW v_setor AS
-	  SELECT (t.a_set_codigo)::integer AS set_id,
+SELECT 
+    (t.a_set_codigo)::integer AS set_id,
     t.a_set_nome AS set_nome,
     t.a_set_sigla AS set_sigla,
     t.a_set_inativacao AS set_inativacao,
     (t.a_set_codigo_superior)::integer AS set_id_superior,
-        CASE
-            WHEN (t.set_ativo = 0) THEN false
-            WHEN (t.set_ativo = 1) THEN true
-            ELSE NULL::boolean
-        END AS set_ativo,
-        CASE
-            WHEN (((t.a_set_nome)::text ~~ 'Gab%'::text) OR ((t.a_set_nome)::text ~~ 'Bloco%'::text)) THEN 'G'::text
-            WHEN ((t.a_set_codigo)::integer = ANY (ARRAY[146, 153])) THEN 'F'::text
-            ELSE 'N'::text
-        END AS set_tipo
-   FROM dblink('hostaddr=192.168.153.46 dbname=elotech user=spa password=123camara'::text, 'select a_set_codigo,a_set_nome,a_set_sigla,a_set_inativacao,a_set_codigo_superior,set_ativo from aise.v_setor'::text) t(a_set_codigo character varying, a_set_nome character varying, a_set_sigla character varying, a_set_inativacao date, a_set_codigo_superior character varying, set_ativo integer);
+    CASE
+        WHEN (t.set_ativo = 0) THEN false
+        WHEN (t.set_ativo = 1) THEN true
+        ELSE NULL::boolean
+    END AS set_ativo,
+    CASE
+        WHEN (((t.a_set_nome)::text ~~ 'Gab%'::text) OR ((t.a_set_nome)::text ~~ 'Bloco%'::text)) THEN 'G'::text
+        WHEN ((t.a_set_codigo)::integer = ANY (ARRAY[146, 153])) THEN 'F'::text
+        ELSE 'N'::text
+    END AS set_tipo
+FROM 
+    dblink(
+        'hostaddr=192.168.153.46 dbname=elotech user=spa password=123camara'::text,
+        'select a_set_codigo,a_set_nome,a_set_sigla,a_set_inativacao,a_set_codigo_superior,set_ativo from aise.v_setor'::text
+    ) t(
+        a_set_codigo character varying, 
+        a_set_nome character varying, 
+        a_set_sigla character varying, 
+        a_set_inativacao date, 
+        a_set_codigo_superior character varying, 
+        set_ativo integer
+    )
+WHERE 
+    t.set_ativo = 1;
 
 CREATE OR REPLACE VIEW v_centro_custo AS
  SELECT t.centrocusto,
