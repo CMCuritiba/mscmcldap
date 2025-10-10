@@ -1,0 +1,14 @@
+services:
+  mscmc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tags:
+        - mscmc:latest
+    image: mscmc:latest
+    ports:
+      - 8081:80
+    environment:
+      DATABASE_URL: "postgres://postgres:postgres@db-postgres:5432/mscmc"
+      SECRET_KEY_PROD: "changeme"
+    restart: unless-stopped

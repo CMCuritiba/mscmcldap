@@ -2,9 +2,11 @@
 
 #source /usr/share/envs/mscmc/bin/activate
 
-cd /usr/share/webapps/mscmcldap
+cd /app || exit 1
 
-mkdir -p /usr/share/webapps/mscmcldap/var/run
-rm -f /usr/share/webapps/mscmcldap/var/run/*
+mkdir -p /app/var/run
+rm -f /app/var/run/*
 
-exec /usr/share/envs/mscmc/bin/gunicorn config.wsgi -c deploy/production/gunicorn.conf.py  --env DJANGO_SETTINGS_MODULE=config.settings.production
+service nginx restart
+
+exec "$VIRTUAL_ENV/bin/gunicorn" config.wsgi -c deploy/production/gunicorn.conf.py  --env DJANGO_SETTINGS_MODULE=config.settings.production

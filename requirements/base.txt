@@ -9,7 +9,7 @@ django==1.10.5
 
 # Configuration
 django-environ==0.4.1
-dj-database-url>=0.4.2
+dj-database-url==0.5.0
 
 # Compressor
 django-compressor==2.1.1
@@ -40,7 +40,9 @@ pytz==2016.10
 # LDAP
 #django-python3-ldap==0.9.13
 #django-ldapdb==0.8.0
-ldap3
+ldap3==2.5.1
+
+https://github.com/CMCuritiba/django-cmcldapauth/raw/master/dist/django-cmcldapauth-0.8.tar.gz
 
 # Django pipeline
 #django-pipeline==1.6.12
@@ -52,4 +54,4 @@ ldap3
 djangorestframework==3.6.3
 
 #Unipath
-Unipath>=1.1
+Unipath==1.1

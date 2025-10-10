@@ -1,3 +1,3 @@
-bind = 'unix:/usr/share/webapps/mscmcldap/var/run/gunicorn.sock'
+bind = 'unix:/app/var/run/gunicorn.sock'
 workers = 2  
-timeout = 30  
+timeout = 30
