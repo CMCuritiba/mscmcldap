@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from .data import PROJETOS_REUNIAO, TEXTOS_CONCLUSAO
 

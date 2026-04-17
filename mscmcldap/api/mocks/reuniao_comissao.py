@@ -1,9 +1,9 @@
-import datetime
+from datetime import datetime
 from .data import REUNIOES  
 
 
 def get_reunioes_mock():
-    hoje = datetime.datetime.now()
+    hoje = datetime.now()
     data_str = hoje.strftime("%d/%m/%Y")
 
     reunioes_do_dia = [
@@ -34,7 +34,6 @@ def get_comissao_mock(con_id):
             }
   return None
 
-from datetime import datetime
 
 def parse_data(data_str):
     if not data_str:

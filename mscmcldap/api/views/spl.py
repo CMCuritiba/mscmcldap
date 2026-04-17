@@ -106,7 +106,7 @@ def spl_projeto_reuniao(request, pac_id, par_id):
     projetos_json = []
 
      # --- MOCK ---
-    if getattr(settings, "USE_MOCK", False):
+    if settings.DEBUG:
         projetos = get_projeto_reuniao_mock(pac_id, par_id)
         return JsonResponse(projetos, safe=False)
     
@@ -141,7 +141,7 @@ def spl_reuniao_comissao_range(request, data_inicio, data_fim):
     fim = formataData(data_fim)
 
     # --- MOCK ---
-    if getattr(settings, "USE_MOCK", False):
+    if settings.DEBUG:
         reunioes = get_reunioes_range_mock(data_inicio, data_fim)
         return JsonResponse(reunioes, safe=False)
     
