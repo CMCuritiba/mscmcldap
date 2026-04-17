@@ -229,29 +229,41 @@ ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
-
 # LOGGING
 # ------------------------------------------------------------------------------
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+
+    "formatters": {
+        "console": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        },
+    },
+
     "handlers": {
         "console": {
-            "level": "INFO",
             "class": "logging.StreamHandler",
+            "formatter": "console",
+        },
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "votacao.log",
+            "maxBytes": 1024 * 1024 * 5,
+            "backupCount": 5,
+            "formatter": "console",
         },
     },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "ERROR",  
-            "propagate": True,
-        },
-         'django.request': {
-            'handlers': ['console'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-    },
+    "root": {
+        "handlers": ["console", "file"],
+        "level": "INFO",
+    }
 }
+# ------------------------------------------------------------------------------
+# LDAP
+# ------------------------------------------------------------------------------
+LDAP_HOST = os.getenv("LDAP_HOST", "localhost")
+LDAP_PORT = os.getenv("LDAP_PORT", "389")
+LDAP_BASE_DN = os.getenv("LDAP_BASE_DN", "ou=Usuarios,dc =pr,dc=gov,dc=br")
+LDAP_USER = os.getenv("LDAP_USER", "cn=admin,dc=pr,dc=gov,dc=br")
+LDAP_PASSWORD = os.getenv("LDAP_PASSWORD", "admin") 

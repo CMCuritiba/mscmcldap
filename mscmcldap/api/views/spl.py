@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import logging
 
+from django.conf import settings
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -12,6 +14,11 @@ from rest_framework.decorators import api_view
 import datetime
 from ...util.date_util import formataData
 from ..models import v_spl_reuniao_comissao, v_spl_conjunto_vereadores, v_spl_pauta_comissao, v_spl_vereador, v_spl_cargos_mesa
+from ..mocks.reuniao_comissao import get_comissao_mock, get_reunioes_mock, get_reunioes_range_mock
+from ..mocks.reuniao import get_rec_id_mock, get_reuniao_mock
+from ..mocks.projetos_reuniao import get_projeto_mock, get_projeto_reuniao_mock, get_projetos_reuniao_mock, get_textos_conclusao_mock
+
+logger = logging.getLogger(__name__)
 
 
 class VereadorSerializer(serializers.ModelSerializer):
@@ -35,6 +42,13 @@ def spl_reuniao_comissao(request):
     #hoje = datetime.date(2019,2,19)
     request.session.flush()
 
+    # --- Mock para ambiente de desenvolvimento ---
+    if settings.DEBUG:
+        logger.info("Retornando dados mockados para reuniões de comissão")
+        reunioes = JsonResponse(get_reunioes_mock(), safe=False)
+        return reunioes
+
+    # --- Produção / banco real ---
     reunioes = v_spl_reuniao_comissao.objects.filter(rec_data=hoje)
     for c in reunioes:
         try:
@@ -61,6 +75,13 @@ def spl_reuniao_comissao(request):
 @api_view(['GET'])
 def spl_projetos_reuniao(request, reuniao):
     projetos_json = []
+
+    # --- Mock para ambiente de desenvolvimento ---
+    if settings.DEBUG:
+        logger.info("Retornando dados mockados para projetos de reunião")
+        return JsonResponse(get_projetos_reuniao_mock(reuniao), safe=False)
+
+    # --- Produção / banco real ---
     c = connection.cursor()
     c.callproc("fn_remoto_projetos_reuniao", [reuniao, ])
     projetos = c.fetchall()
@@ -83,6 +104,13 @@ def spl_projetos_reuniao(request, reuniao):
 @api_view(['GET'])
 def spl_projeto_reuniao(request, pac_id, par_id):
     projetos_json = []
+
+     # --- MOCK ---
+    if getattr(settings, "USE_MOCK", False):
+        projetos = get_projeto_reuniao_mock(pac_id, par_id)
+        return JsonResponse(projetos, safe=False)
+    
+     # --- REAL ---
     c = connection.cursor()
     c.callproc("fn_remoto_projeto_reuniao", [pac_id, par_id, ])
     projetos = c.fetchall()
@@ -112,6 +140,12 @@ def spl_reuniao_comissao_range(request, data_inicio, data_fim):
     inicio = formataData(data_inicio)
     fim = formataData(data_fim)
 
+    # --- MOCK ---
+    if getattr(settings, "USE_MOCK", False):
+        reunioes = get_reunioes_range_mock(data_inicio, data_fim)
+        return JsonResponse(reunioes, safe=False)
+    
+    # --- REAL ---
     if fim is not None:
         reunioes = v_spl_reuniao_comissao.objects.filter(rec_data__range=(inicio, fim))
     elif inicio is not None:
@@ -138,29 +172,29 @@ def spl_reuniao_comissao_range(request, data_inicio, data_fim):
     return JsonResponse(reunioes_json, safe=False)
 
 
-@api_view(['GET'])
-def spl_vereadores(request):
-    vereadores = v_spl_vereador.objects.all().order_by('ini_nome')
-    serializer = VereadorSerializer(vereadores, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def spl_vereadores(request):
+#     vereadores = v_spl_vereador.objects.all().order_by('ini_nome')
+#     serializer = VereadorSerializer(vereadores, many=True)
+#     return Response(serializer.data)
 
 
-@api_view(['GET'])
-def spl_vereador_matricula(request, matricula):
-    vereador = None
-    try:
-        vereador = v_spl_vereador.objects.get(matricula=matricula)
-        serializer = VereadorSerializer(vereador, many=False)
-        return Response(serializer.data)
-    except vereador.DoesNotExist:
-        raise Http404
+# @api_view(['GET'])
+# def spl_vereador_matricula(request, matricula):
+#     vereador = None
+#     try:
+#         vereador = v_spl_vereador.objects.get(matricula=matricula)
+#         serializer = VereadorSerializer(vereador, many=False)
+#         return Response(serializer.data)
+#     except vereador.DoesNotExist:
+#         raise Http404
 
 
-@api_view(['GET'])
-def spl_cargos_mesa(request):
-    cargos_mesa = v_spl_cargos_mesa.objects.all().order_by('crg_ordem')
-    serializer = CargosMesaSerializer(cargos_mesa, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def spl_cargos_mesa(request):
+#     cargos_mesa = v_spl_cargos_mesa.objects.all().order_by('crg_ordem')
+#     serializer = CargosMesaSerializer(cargos_mesa, many=True)
+#     return Response(serializer.data)
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -170,6 +204,14 @@ def spl_cargos_mesa(request):
 def spl_get_rec_id(request, pac_id):
     pauta_json = []
     e_json = {}
+
+    # --- Mock para ambiente de desenvolvimento ---
+    if settings.DEBUG:
+        rec_id = get_rec_id_mock(pac_id)
+        print(rec_id)
+        return JsonResponse(rec_id, safe=False)
+
+    # --- Produção / banco real ---
     try:
         pauta = v_spl_pauta_comissao.objects.get(pac_id=pac_id)
     except:
@@ -187,6 +229,14 @@ def spl_get_rec_id(request, pac_id):
 def spl_get_reuniao(request, rec_id):
     reuniao_json = []
     e_json = {}
+
+    # --- Mock para ambiente de desenvolvimento ---
+    if settings.DEBUG:
+        reuniao = get_reuniao_mock(rec_id)
+        return JsonResponse([reuniao] if reuniao else [], safe=False)
+
+
+    # --- Produção / banco real ---
     try:
         reuniao = v_spl_reuniao_comissao.objects.get(rec_id=rec_id)
     except:
@@ -207,6 +257,12 @@ def spl_get_reuniao(request, rec_id):
 def spl_get_comissao(request, con_id):
     comissao_json = []
     e_json = {}
+
+    # --- Mock para ambiente de desenvolvimento ---
+    if settings.DEBUG:
+        comissao = get_comissao_mock(con_id)
+        return JsonResponse([comissao] if comissao else [], safe=False)
+    
     try:
         comissao = v_spl_conjunto_vereadores.objects.get(con_id=con_id)
     except:
@@ -223,6 +279,14 @@ def spl_get_comissao(request, con_id):
 @api_view(['GET'])
 def spl_textos_conclusao(request, pro_codigo):
     textos_json = []
+
+    # --- MOCK ---
+    if settings.DEBUG:
+        textos = get_textos_conclusao_mock(pro_codigo)
+        return JsonResponse(textos, safe=False)
+    
+     # --- REAL ---
+     
     c = connection.cursor()
     c.callproc("fn_remoto_texto_conclusao", [pro_codigo, ])
     textos = c.fetchall()
@@ -251,6 +315,14 @@ def spl_textos_conclusao(request, pro_codigo):
 @api_view(['GET'])
 def spl_projeto(request, pac_id, par_id, codigo_proposicao):
     projetos_json = []
+
+    # --- Mock para ambiente de desenvolvimento ---
+    if settings.DEBUG:
+        logger.info("Retornando dados mockados para projeto")
+        projetos = get_projeto_mock(pac_id, par_id, codigo_proposicao)
+        return JsonResponse(projetos, safe=False)
+
+    # --- Produção / banco real ---
     c = connection.cursor()
     c.callproc("fn_remoto_projeto", [pac_id, par_id, codigo_proposicao])
     projetos = c.fetchall()

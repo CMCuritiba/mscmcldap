@@ -1,0 +1,23 @@
+dn: uid=joao,ou=Usuarios,dc=pr,dc=gov,dc=br
+objectClass: inetOrgPerson
+objectClass: top
+uid: joao
+cn: João Silva
+givenName: João
+sn: Silva
+mail: joao@pr.gov.br
+employeeNumber: 1001
+departmentNumber: 10
+userPassword: 123456
+
+dn: uid=maria,ou=Usuarios,dc=pr,dc=gov,dc=br
+objectClass: inetOrgPerson
+objectClass: top
+uid: maria
+cn: Maria Souza
+givenName: Maria
+sn: Souza
+mail: maria@pr.gov.br
+employeeNumber: 1002
+departmentNumber: 20
+userPassword: 123456

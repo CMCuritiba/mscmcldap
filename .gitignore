@@ -67,3 +67,7 @@ staticfiles/
 components/
 *migrations
 !migrations/0001_initial.py
+
+.venv/
+venv/
+docker/ldap/data/
