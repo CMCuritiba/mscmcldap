@@ -60,12 +60,12 @@ def get_reunioes_range_mock(data_inicio, data_fim):
         # ----------------------------
         # Filtro por data
         # ----------------------------
-        if inicio and fim:
-            if not (inicio <= rec_data <= fim):
-                continue
-        elif inicio:
-            if not (rec_data >= inicio):
-                continue
+        # if inicio and fim:
+        #     if not (inicio <= rec_data <= fim):
+        #         continue
+        # elif inicio:
+        #     if not (rec_data >= inicio):
+        #         continue
 
         # ----------------------------
         # Simula pauta liberada
@@ -89,5 +89,8 @@ def get_reunioes_range_mock(data_inicio, data_fim):
             'rec_data': r['rec_data'],
             'pac_id': r['pac_id'],
         })
+
+        print ('RESULTADOS')
+        print (resultados)
 
     return resultados
