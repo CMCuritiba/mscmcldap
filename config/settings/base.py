@@ -267,3 +267,5 @@ LDAP_PORT = os.getenv("LDAP_PORT", "389")
 LDAP_BASE_DN = os.getenv("LDAP_BASE_DN", "ou=Usuarios,dc =pr,dc=gov,dc=br")
 LDAP_USER = os.getenv("LDAP_USER", "cn=admin,dc=pr,dc=gov,dc=br")
 LDAP_PASSWORD = os.getenv("LDAP_PASSWORD", "admin") 
+
+USE_MOCK = os.getenv("USE_MOCK", "false").lower() in ("true", "1", "yes")
