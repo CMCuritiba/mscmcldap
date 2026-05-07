@@ -2,24 +2,25 @@ from datetime import datetime
 from .data import REUNIOES  
 
 
+def hoje_str():
+    return datetime.now().strftime("%d/%m/%Y")
+
 def get_reunioes_mock():
-    hoje = datetime.now()
-    data_str = hoje.strftime("%d/%m/%Y")
+    data_str = hoje_str()
 
     reunioes_do_dia = [
         {
             'rec_id': r['rec_id'],
             'con_id': r['con_id'],
-            'con_desc': r['con_desc'], 
+            'con_desc': r['con_desc'],
             'con_sigla': r['con_sigla'],
             'rec_tipo_reuniao': r['rec_tipo_reuniao'],
             'rec_numero': r['rec_numero'],
-            'versao': '1.0',  
-            'rec_data': r['rec_data'],
+            'versao': '1.0',
+            'rec_data': data_str,
             'pac_id': r['pac_id']
         }
         for r in REUNIOES
-        if r['rec_data'] == data_str
     ]
 
     return reunioes_do_dia
@@ -55,22 +56,22 @@ def get_reunioes_range_mock(data_inicio, data_fim):
     resultados = []
 
     for r in REUNIOES:
-        rec_data = parse_data(r['rec_data'])
+        rec_data = datetime.now()
 
         # ----------------------------
         # Filtro por data
         # ----------------------------
-        # if inicio and fim:
-        #     if not (inicio <= rec_data <= fim):
-        #         continue
-        # elif inicio:
-        #     if not (rec_data >= inicio):
-        #         continue
+        if inicio and fim:
+            if not (inicio <= rec_data <= fim):
+                continue
+        elif inicio:
+            if not (rec_data >= inicio):
+                continue
 
         # ----------------------------
         # Simula pauta liberada
         # ----------------------------
-        pac_liberada = True  # mock fixo
+        pac_liberada = True  
 
         if not pac_liberada:
             continue
@@ -85,12 +86,10 @@ def get_reunioes_range_mock(data_inicio, data_fim):
             'con_sigla': r['con_sigla'],
             'rec_tipo_reuniao': r['rec_tipo_reuniao'],
             'rec_numero': r['rec_numero'],
-            'versao': 1,  # mock fixo (não existe no seu dataset)
-            'rec_data': r['rec_data'],
+            'versao': 1,  
+            'rec_data': hoje_str(),
             'pac_id': r['pac_id'],
         })
 
-        print ('RESULTADOS')
-        print (resultados)
-
     return resultados
+
