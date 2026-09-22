@@ -12,24 +12,39 @@ from mscmcldap.util.date_util import formataData
 logger = logging.getLogger(__name__)
 
 def get_reunioes_comissao():
-    hoje = datetime.date.today()  # corrigido aqui 👈
+    hoje = datetime.date.today()
 
-    # --- Mock ---
+    logger.info(">>> get_reunioes_comissao - data: %s", hoje)
+
     if settings.USE_MOCK:
-        logger.info("Retornando dados mockados para reuniões de comissão")
+        logger.info(">>> Retornando dados mockados")
         return get_reunioes_mock()
 
-    # --- Real ---
     reunioes_json = []
+
+    logger.info(">>> Consultando v_spl_reuniao_comissao")
 
     reunioes = v_spl_reuniao_comissao.objects.filter(rec_data=hoje)
 
+    logger.info(">>> Consulta reuniões terminou")
+
     for c in reunioes:
+        logger.info(">>> Processando rec_id=%s con_id=%s", c.rec_id, c.con_id)
+
         try:
             pauta = v_spl_pauta_comissao.objects.get(rec_id=c.rec_id)
 
+            logger.info(
+                ">>> Pauta encontrada rec_id=%s pac_id=%s liberada=%s",
+                c.rec_id,
+                pauta.pac_id,
+                pauta.pac_liberada
+            )
+
             if pauta.pac_liberada:
-                conjunto = v_spl_conjunto_vereadores.objects.get(con_id=c.con_id)
+                conjunto = v_spl_conjunto_vereadores.objects.get(
+                    con_id=c.con_id
+                )
 
                 reunioes_json.append({
                     'rec_id': c.rec_id,
@@ -44,9 +59,19 @@ def get_reunioes_comissao():
                 })
 
         except v_spl_pauta_comissao.DoesNotExist:
+            logger.info(
+                ">>> Pauta não encontrada rec_id=%s",
+                c.rec_id
+            )
             continue
 
+    logger.info(
+        ">>> get_reunioes_comissao terminou. Total: %s",
+        len(reunioes_json)
+    )
+
     return reunioes_json
+
 
 def get_projetos_reuniao(reuniao):
     # --- Mock ---
