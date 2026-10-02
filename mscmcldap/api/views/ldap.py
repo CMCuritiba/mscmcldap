@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+from django.conf import settings
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,16 +17,25 @@ from mscmcldap.util.json_util import JsonConvert
 
 @api_view(['GET'])
 def ldap_usuarios(request):
+    server = Server(settings.LDAP_HOST, port=settings.LDAP_PORT)
+
     usuarios_json = []
-    s = Server('ldap://ldap')
-    c = Connection(s)
-    c.bind()
-    c.search(
-        search_base = 'ou=Usuarios,dc=pr,dc=gov,dc=br',
-        search_filter = '(employeeNumber=*)',
-        attributes = ['cn', 'givenName', 'uid', 'employeeNumber', 'mail']
+    s = Server('localhost', port=389)
+    # c = Connection(s)
+    conn = Connection(
+        server,
+        user=settings.LDAP_USER,
+        password=settings.LDAP_PASSWORD,
+        auto_bind=True
     )
-    for usuario in c.response:
+
+    conn.search(
+        search_base=settings.LDAP_BASE_DN,
+        search_filter='(employeeNumber=*)',
+        attributes=['cn', 'givenName', 'uid', 'employeeNumber', 'mail']
+    )
+    
+    for usuario in conn.response:
         e_json = {}
         e_json['cn'] = re.sub('(\[)*(\])*(\')*', '', str(usuario['attributes']['cn']))
         e_json['givenName'] = re.sub('(\[)*(\])*(\')*', '', str(usuario['attributes']['givenName']))

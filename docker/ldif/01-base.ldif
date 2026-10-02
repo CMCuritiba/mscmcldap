@@ -1,0 +1,5 @@
+
+
+dn: ou=Usuarios,dc=pr,dc=gov,dc=br
+objectClass: organizationalUnit
+ou: Usuarios

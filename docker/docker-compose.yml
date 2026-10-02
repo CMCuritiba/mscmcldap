@@ -1,0 +1,52 @@
+# services:
+#   web:
+#     build: .
+#     container_name: mscmc-betha
+#     ports:
+#       - "8000:8000"
+#     volumes:
+#       - .:/app
+#     environment:
+#       - DJANGO_SETTINGS_MODULE=mscmc.settings
+#     stdin_open: true
+#     tty: true
+
+services:
+  # postgres:
+  #   image: postgres:16
+  #   container_name: postgres_local
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: meubanco
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+  ldap:
+    image: osixia/openldap:1.5.0
+    container_name: ldap
+    command: ["--loglevel", "debug", "--copy-service"]
+    environment:
+      LDAP_ORGANISATION: "CMC"
+      LDAP_DOMAIN: "pr.gov.br"
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_TLS: "false"
+    ports:
+      - "389:389"
+      - "636:636"
+    volumes:
+      # persistência correta
+      - ./ldap/data:/var/lib/ldap
+      # - ./ldap/config:/etc/ldap/slapd.d
+
+      # bootstrap LDIF (READ ONLY!)
+      - ./ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom
+    restart: unless-stopped
+
+volumes:
+  # postgres_data:
+  mscmc-betha_ldap_data:
+  mscmc-betha_ldap_config:
